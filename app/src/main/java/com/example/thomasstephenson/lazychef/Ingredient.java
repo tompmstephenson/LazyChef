@@ -4,6 +4,11 @@ import java.io.File;
  * Created by Jack on 3/7/2019.
  */
 
+/*
+ * Updated by Tom on 3/14/2019. Removed calories per ingredient in one constructor,
+ * as that would require an extra API call in Query.
+ */
+
 public class Ingredient {
 
     private String name;
@@ -21,11 +26,11 @@ public class Ingredient {
         imageURL = url;
         image = img;
     }
-    public Ingredient(String ing_name,int ing_amount,String ing_unit,int ing_cal){ //Constructor if image unavailable
+    public Ingredient(String ing_name,int ing_amount,String ing_unit){ //Constructor if image unavailable
         name = ing_name;
         amount = ing_amount;
         unit = ing_unit;
-        calories = ing_cal;
+        // calories = ing_cal;
     }
 
     public String getName() { return name; }
