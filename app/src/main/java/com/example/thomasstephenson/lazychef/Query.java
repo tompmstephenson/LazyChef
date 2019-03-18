@@ -16,6 +16,12 @@ import org.json.JSONObject;
  */
 
 public class Query {
+    private String[] ingNames;
+    //Instance of the query constructor for there not being
+    public void Query(String[] ingNames){
+        this.ingNames = ingNames;
+    }
+
 
     /* API Key. Right now, this is my personal API key. In the future we might want to change this
      * to a team-wide API key (I don't want my debit card to be charged...
@@ -106,13 +112,32 @@ public class Query {
     }
 
     public void AddToQueryIngredients(String ingredientName) {
+        String[] cloneList = new String[ingNames.length + 1];
+        //copying original list
+        for(int i = 0; i < cloneList.length; i++) {
+            if(i > ingNames.length)
+                cloneList[i] = ingNames[i];
+        //adding final ingredient
+            else
+                cloneList[i] = ingredientName;
+        }
 
+        ingNames = cloneList;
     }
 
     public void DeleteFromQueryIngredients(String ingredientName) {
-
+       String[] cloneList = new String[ingNames.length - 1];
+        for(int i = 0; i > cloneList.length; i++){
+            //copies list until finds item to delete, replaces with last item in list
+            if(ingNames[i].equals(ingredientName))
+                cloneList[i] = ingNames[ingNames.length];
+            else
+                cloneList[i] = ingNames[i];
+        }
+        //copies list back to original var
+        ingNames = cloneList;
     }
-
+//cant do until pantry class is written
     public void AddIngredientsPantry() {
 
     }
