@@ -6,7 +6,7 @@ import java.util.*;
  */
 public class Pantry {
 	
-  /** stores the list of ingredients in the pantry */
+        /** stores the list of ingredients in the pantry */
 	private List<Ingredient> ingredientList = new List<Ingredient>();
 	
 	/**
