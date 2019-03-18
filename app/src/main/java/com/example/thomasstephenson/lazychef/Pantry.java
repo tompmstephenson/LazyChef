@@ -7,14 +7,14 @@ import java.util.*;
  */
 public class Pantry {
 	
-        /** stores the list of ingredients in the pantry */
-	private List<Ingredient> ingredientList = new List<Ingredient>();
+	/** stores the list of ingredients in the pantry */
+	private ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
 	
 	/**
 	 * Returns the list of ingredients in the pantry.
 	 * @return list of ingredients in the pantry
 	 */
-	public List<Ingredient> getIngredientList() {
+	public ArrayList<Ingredient> getIngredientList() {
 		return ingredientList;
 	}
 	
@@ -36,7 +36,7 @@ public class Pantry {
 	 * Takes a list of ingredients and add them to the current set of ingredients in the pantry.
 	 * @param items list of ingredients being added to the pantry
 	 */
-	public void addIngredients(List<Ingredient> items) {
+	public void addIngredients(ArrayList<Ingredient> items) {
 		ingredientList.addAll(items);
 	}
 	
