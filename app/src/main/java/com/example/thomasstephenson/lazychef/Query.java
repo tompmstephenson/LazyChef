@@ -18,8 +18,8 @@ import org.json.JSONObject;
 public class Query {
     private String[] ingNames;
     //Instance of the query constructor for there not being
-    public void Query(String[] ingNames){
-        this.ingNames = ingNames;
+    public void QueryIngredients(){
+        QueryIngredientsHelper(this.ingNames);
     }
 
 
@@ -29,7 +29,7 @@ public class Query {
     private final String MASHAPE_AUTH = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
 
     //find recipes that match ingredients
-    public List<Recipe> QueryIngredients(String[] ingredientNames) {
+    private List<Recipe> QueryIngredientsHelper(String[] ingredientNames) {
         List<Recipe> recipes = new ArrayList<>();
         HttpResponse<JsonNode> response;
         try {
@@ -114,8 +114,8 @@ public class Query {
     public void AddToQueryIngredients(String ingredientName) {
         String[] cloneList = new String[ingNames.length + 1];
         //copying original list
-        for(int i = 0; i < cloneList.length; i++) {
-            if(i > ingNames.length)
+        for(int i = 0; i < cloneList.length + 1; i++) {
+            if(i < ingNames.length)
                 cloneList[i] = ingNames[i];
         //adding final ingredient
             else
@@ -127,10 +127,10 @@ public class Query {
 
     public void DeleteFromQueryIngredients(String ingredientName) {
        String[] cloneList = new String[ingNames.length - 1];
-        for(int i = 0; i > cloneList.length; i++){
+        for(int i = 0; i < cloneList.length; i++){
             //copies list until finds item to delete, replaces with last item in list
             if(ingNames[i].equals(ingredientName))
-                cloneList[i] = ingNames[ingNames.length];
+                cloneList[i] = ingNames[ingNames.length - 1];
             else
                 cloneList[i] = ingNames[i];
         }
@@ -140,6 +140,10 @@ public class Query {
 //cant do until pantry class is written
     public void AddIngredientsPantry() {
 
+    }
+
+    public String[] getIngNames() {
+        return ingNames;
     }
 
 
