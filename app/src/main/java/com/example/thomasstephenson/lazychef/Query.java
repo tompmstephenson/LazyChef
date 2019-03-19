@@ -138,7 +138,10 @@ public class Query {
         ingNames = cloneList;
     }
 //cant do until pantry class is written
-    public void AddIngredientsPantry() {
+    public void AddIngredientsPantry(Pantry p) {
+        for(Ingredient i: p.getIngredientList()) {
+            AddToQueryIngredients(i.getName());
+        }
 
     }
 
