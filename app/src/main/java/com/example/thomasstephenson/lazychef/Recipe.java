@@ -57,9 +57,41 @@ public class Recipe {
     public int getEstimatedCalories() {
         int totalCal = 0;
         for(int i=0;i<ingredients.size();i++) {
-            totalCal += ingredients.get(i).getCalories();
+            totalCal += ingredients.get(i).getCalories() * ingredients.get(i).getAmount();
         }
         return totalCal;
+    }
+
+    public Ingredient getIngredient(String ingredientName){
+        for(int i=0; i<ingredients.size();i++){
+            if(ingredientName.equals(ingredients.get(i).getName()))
+                return ingredients.get(i);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o == this)
+            return true;
+
+        if(!(o instanceof Ingredient))
+            return false;
+
+        Recipe recipe = (Recipe)o;
+        boolean listMatch = true;
+        List<Ingredient> list = recipe.getListIngredients();
+        if(list.size() != ingredients.size()) {
+            listMatch = false;
+        }
+        else {
+            for (int i = 0; i < list.size(); i++) {
+                if (!ingredients.contains(list.get(i)))
+                    listMatch = false;
+            }
+        }
+        return name.equals(recipe.getName()) && instructions.equals(recipe.getInstructions()) && prepTime==recipe.getPrepTime() && servings==recipe.getServings() && listMatch;
+
     }
 
 

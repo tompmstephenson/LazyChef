@@ -26,11 +26,11 @@ public class Ingredient {
         imageURL = url;
         image = img;
     }
-    public Ingredient(String ing_name,int ing_amount,String ing_unit){ //Constructor if image unavailable
-        name = ing_name;
-        amount = ing_amount;
-        unit = ing_unit;
-        // calories = ing_cal;
+    public Ingredient(String ingName,int ingAmount,String ingUnit,int ingCal){ //Constructor if image unavailable
+        name = ingName;
+        amount = ingAmount;
+        unit = ingUnit;
+        calories = ingCal;
     }
 
     public String getName() { return name; }
@@ -50,5 +50,17 @@ public class Ingredient {
 
     public File getImage() { return image; }
     public void setImage(File img) { image = img; }
+
+    @Override
+    public boolean equals(Object o){
+        if(o == this)
+            return true;
+
+        if(!(o instanceof Ingredient))
+            return false;
+
+        Ingredient ing = (Ingredient)o;
+        return name.equals(ing.getName()) && amount==ing.getAmount() && unit.equals(ing.getUnit()) && calories==ing.getCalories();
+    }
 
 }

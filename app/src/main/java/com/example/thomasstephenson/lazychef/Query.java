@@ -93,7 +93,8 @@ public class Query {
                     ingName = jsonIngredient.getString("name");
                     ingAmount = jsonIngredient.getInt("amount");
                     ingUnit = jsonIngredient.getString("unit");
-                    ingList.add(new Ingredient(ingName, ingAmount, ingUnit));
+                    ingCal = jsonIngredient.getInt("calories");
+                    ingList.add(new Ingredient(ingName, ingAmount, ingUnit, ingCal));
                 }
 
                 recipes.add(new Recipe(recName, ingList, instr, preptime, servings));
