@@ -33,8 +33,8 @@ import org.json.JSONObject;
 public class Query {
     private String[] ingNames;
     //Instance of the query constructor for there not being
-    public void QueryIngredients(Activity activity){
-        QueryIngredientsHelper(this.ingNames, activity);
+    public void QueryRecipes(Activity activity){
+        QueryRecipesHelper(this.ingNames, activity);
     }
 
 
@@ -44,6 +44,7 @@ public class Query {
     //private final String MASHAPE_AUTH = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
     private final String MASHAPE_AUTH  = "171d4e42a2mshc256c66ea6fac0ep10200fjsn8c8ab6401453";
     List<Recipe> recipes = new ArrayList<>();
+    List<Ingredient> ingredients = new ArrayList<>();
 
     public void getRecipeImage(final Recipe recipe, final Activity activity) {
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
@@ -58,6 +59,25 @@ public class Query {
                             //Log.d("CREATING RECIPE VIEW", r.getName());
                         //}
                         MainActivity.addBitmapImage(recipes.indexOf(recipe), bitmap);
+                    }
+                }, 0, 0, null,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO
+                    }
+                });
+        requestQueue.add(request);
+    }
+
+    public void getIngredientImage(final Ingredient ingredient, final Activity activity) {
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        ImageRequest request = new ImageRequest(ingredient.getImageURL(),
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        ingredient.setImage(bitmap);
+                        int index = ingredients.indexOf(ingredient);
+                        PantryActivity.addBitmapImage(index, bitmap);
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
@@ -132,18 +152,11 @@ public class Query {
 
             //extract ingredients
             for (int j = 0; j < jsonRecipeIngredients.length(); j++) {
-                //fields needed for Ingredient constuctor
-                String ingName;
-                int ingAmount;
-                String ingUnit;
-                int ingCal;
-
-                //extracting ingredient information
                 JSONObject jsonIngredient = jsonRecipeIngredients.getJSONObject(j);
-                ingName = jsonIngredient.getString("name");
-                ingAmount = jsonIngredient.getInt("amount");
-                ingUnit = jsonIngredient.getString("unit");
-                ingList.add(new Ingredient(ingName, ingAmount, ingUnit));
+                String ingName = jsonIngredient.getString("name");
+                int ingAmount = jsonIngredient.getInt("amount");
+                String ingUnit = jsonIngredient.getString("unit");
+                ingList.add(new Ingredient(ingName, ingAmount, null, ingUnit, 0));
             }
             Recipe recipe = new Recipe(recName, ingList, instr, preptime, servings, imageURL, null);
             recipes.add(recipe);
@@ -179,7 +192,7 @@ public class Query {
         }
     }
     //find recipes that match ingredients
-    public void QueryIngredientsHelper(String[] ingredientNames, Activity activity) {
+    public void QueryRecipesHelper(String[] ingredientNames, Activity activity) {
         List<Recipe> recipes = new ArrayList<>();
         try {
             //building the request String that will query the API
@@ -195,6 +208,55 @@ public class Query {
             Log.e("ERROR", e.getMessage());
         }
     }
+
+    public void addIngredient(JSONArray ingredientsJSON, Activity activity) {
+        for (int i = 0; i < ingredientsJSON.length(); i++)
+        {
+            try {
+                JSONObject jsonIngredient = ingredientsJSON.getJSONObject(i);
+                String name = jsonIngredient.getString("name");
+                String imageName = jsonIngredient.getString("image");
+                String imageURL = "https://spoonacular.com/cdn/ingredients_100x100/" +imageName;
+                String type = jsonIngredient.getString("aisle");
+                Ingredient ingredient = new Ingredient(name, 0, type, null, 0, imageURL, null);
+                ingredients.add(ingredient);
+                PantryActivity.createIngredientView(ingredient, activity);
+                getIngredientImage(ingredient, activity);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d("INGREDIENTS", ingredientsJSON.toString());
+    }
+
+    public void queryIngredients(String ingredient, final Activity activity) {
+        String request = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/autocomplete?number=5&metaInformation=true&query=" +ingredient;
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        JsonArrayRequest JSONrequest = new JsonArrayRequest(Request.Method.GET, request, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                addIngredient(response, activity);
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<>();
+                params.put("X-RapidAPI-Key", MASHAPE_AUTH);
+                return params;
+            }
+        };
+
+        requestQueue.add(JSONrequest);
+    }
+
 
     public void AddToQueryIngredients(String ingredientName) {
         String[] cloneList = new String[ingNames.length + 1];
