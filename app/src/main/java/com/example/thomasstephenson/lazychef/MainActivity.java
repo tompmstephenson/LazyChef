@@ -59,14 +59,14 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener mSearchButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            performSearch();
+            searchForRecipes();
         }
     };
 
-    private void performSearch() {
+    private void searchForRecipes() {
         String[] ingredients = new String[]{"Eggs", "Cheese"};
         Query query = new Query();
-        query.QueryIngredientsHelper(ingredients, this);
+        query.QueryRecipesHelper(ingredients, this);
     }
 
     public static void addBitmapImage(int index, Bitmap bitmap) {
@@ -95,18 +95,18 @@ public class MainActivity extends AppCompatActivity {
             ingredientsDescript = ingredientsDescript.substring(0, 57) + "...";
 
         Log.d("CREATING RECIPE VIEW", recipeName);
-        addRelativeLayout(recipeName, ingredientsDescript, activity);
+        addRecipeLayout(recipeName, ingredientsDescript, activity);
         Log.d("CREATING RECIPE VIEW", recipeName + " view has been created");
     }
 
-    private static void addRelativeLayout(String recipeName, String ingredients, Activity activity) {
+    private static void addRecipeLayout(String recipeName, String ingredients, Activity activity) {
         View recipeView = activity.getLayoutInflater().inflate(R.layout.recipe_layout, null);
         ViewGroup recipeViewGroup = (ViewGroup) recipeView;
         TextView recipeTitleView = (TextView) recipeViewGroup.getChildAt(1);
         recipeTitleView.setText(recipeName);
-        mRecipeListLayout.addView(recipeView);
         TextView ingredientsView = (TextView) recipeViewGroup.getChildAt(2);
         ingredientsView.setText(ingredients);
+        mRecipeListLayout.addView(recipeView);
 
     }
 
