@@ -16,7 +16,7 @@ import org.json.JSONObject;
  */
 
 public class Query {
-    private String[] ingNames;
+    private List<String> ingNames = new ArrayList<>();
     //Instance of the query constructor for there not being
     public void QueryIngredients(){
         QueryIngredientsHelper(this.ingNames);
@@ -29,16 +29,16 @@ public class Query {
     private final String MASHAPE_AUTH = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
 
     //find recipes that match ingredients
-    private List<Recipe> QueryIngredientsHelper(String[] ingredientNames) {
+    private List<Recipe> QueryIngredientsHelper(List<String> ingredientNames) {
         List<Recipe> recipes = new ArrayList<>();
         HttpResponse<JsonNode> response;
         try {
 
             //building the request String that will query the API
             StringBuilder request = new StringBuilder("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?number=5&ranking=2&ingredients=");
-            for (int i = 0; i < ingredientNames.length; i++) {
-                request.append(ingredientNames[i]);
-                if (i != ingredientNames.length - 1) {
+            for (int i = 0; i < ingredientNames.size(); i++) {
+                request.append(ingredientNames.get(i));
+                if (i != ingredientNames.size() - 1) {
                     request.append("%2C");
                 }
             }
@@ -113,30 +113,11 @@ public class Query {
     }
 
     public void AddToQueryIngredients(String ingredientName) {
-        String[] cloneList = new String[ingNames.length + 1];
-        //copying original list
-        for(int i = 0; i < cloneList.length + 1; i++) {
-            if(i < ingNames.length)
-                cloneList[i] = ingNames[i];
-        //adding final ingredient
-            else
-                cloneList[i] = ingredientName;
-        }
-
-        ingNames = cloneList;
+        ingNames.add(ingredientName);
     }
 
     public void DeleteFromQueryIngredients(String ingredientName) {
-       String[] cloneList = new String[ingNames.length - 1];
-        for(int i = 0; i < cloneList.length; i++){
-            //copies list until finds item to delete, replaces with last item in list
-            if(ingNames[i].equals(ingredientName))
-                cloneList[i] = ingNames[ingNames.length - 1];
-            else
-                cloneList[i] = ingNames[i];
-        }
-        //copies list back to original var
-        ingNames = cloneList;
+        ingNames.remove(ingredientName);
     }
 //cant do until pantry class is written
     public void AddIngredientsPantry(Pantry p) {
@@ -146,7 +127,7 @@ public class Query {
 
     }
 
-    public String[] getIngNames() {
+    public List<String> getIngNames() {
         return ingNames;
     }
 
