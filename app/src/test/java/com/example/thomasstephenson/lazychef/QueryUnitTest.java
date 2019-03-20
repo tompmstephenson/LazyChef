@@ -2,6 +2,7 @@ package com.example.thomasstephenson.lazychef;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.*;
 /**
  * Created by Jack on 3/19/2019.
  * Local unit test for Recipe object class, which will execute on the development machine (host).
@@ -13,20 +14,20 @@ public class QueryUnitTest {
     @Test
     public void test_AddToQueryIngredientsMethod() {
         Query query = new Query();
-        String[] preNames = query.getIngNames();
+        int preNames = query.getIngNames().size();
         query.AddToQueryIngredients("Apples");
-        String[] postNames = query.getIngNames();
+        int postNames = query.getIngNames().size();
 
-        assertNotEquals(preNames.length,postNames.length);
+        assertNotEquals(preNames,postNames);
 
-        String apples = postNames[postNames.length-1];
+        String apples = query.getIngNames().get(postNames - 1);
         assertEquals(apples,"Apples");
     }
 
     @Test
     public void test_DeleteFromQueryIngredientsMethod() {
         Query query = new Query();
-        String[] names = query.getIngNames();
+        List<String> names = query.getIngNames();
         query.AddToQueryIngredients("Apples");
         query.DeleteFromQueryIngredients("Apples");
         for(String i:names){
