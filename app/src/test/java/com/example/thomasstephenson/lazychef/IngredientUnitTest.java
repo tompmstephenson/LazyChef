@@ -26,7 +26,7 @@ public class IngredientUnitTest {
         assertEquals(amount,spaghetti.getAmount());
         assertEquals(unit,spaghetti.getUnit());
         assertEquals(calories,spaghetti.getCalories());
-        assertEquals(imageURL,spaghetti.getName());
+        assertEquals(imageURL,spaghetti.getImageURL());
         assertEquals(file,spaghetti.getImage());
 
         File file2 = new File("../../../../photos/meatballs.jpg");
