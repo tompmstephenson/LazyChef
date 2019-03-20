@@ -3,12 +3,7 @@ package com.example.thomasstephenson.lazychef;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -19,22 +14,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.System.in;
 
 public class MainActivity extends AppCompatActivity {
 
 
     Button mSearchButton;
     static LinearLayout mRecipeListLayout;
+    ArrayList <Ingredient> ingredients;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -43,13 +32,11 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_discover:
-                    startActivity(new Intent(MainActivity.this, PantryActivity.class));
                     return true;
                 case R.id.navigation_pantry:
                     startActivity(new Intent(MainActivity.this, PantryActivity.class));
                     return true;
                 case R.id.navigation_settings:
-                    startActivity(new Intent(MainActivity.this, PantryActivity.class));
                     return true;
             }
             return false;
@@ -64,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void searchForRecipes() {
-        String[] ingredients = new String[]{"Eggs", "Cheese"};
+        String[] ingredients = getIngredientNames();
         Query query = new Query();
         query.QueryRecipesHelper(ingredients, this);
     }
@@ -75,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView = (ImageView) recipeViewGroup.getChildAt(0);
             imageView.setImageBitmap(bitmap);
         }
+    }
+
+    public String[] getIngredientNames() {
+        String [] ingredientNames = new String[ingredients.size()];
+        for (int i = 0; i < ingredients.size(); i++) {
+            ingredientNames[i] = ingredients.get(i).getName();
+        }
+        return ingredientNames;
     }
 
     public static void createRecipeView(Recipe recipe, Activity activity) {
@@ -94,9 +89,7 @@ public class MainActivity extends AppCompatActivity {
         if (ingredientsDescript.length() > 60)
             ingredientsDescript = ingredientsDescript.substring(0, 57) + "...";
 
-        Log.d("CREATING RECIPE VIEW", recipeName);
         addRecipeLayout(recipeName, ingredientsDescript, activity);
-        Log.d("CREATING RECIPE VIEW", recipeName + " view has been created");
     }
 
     private static void addRecipeLayout(String recipeName, String ingredients, Activity activity) {
@@ -119,6 +112,21 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (NullPointerException e){ }
         setContentView(R.layout.activity_main);
+
+        Log.d("SAVED_INGREDIENTS", "STARTING MainActivity");
+        Intent intent = getIntent();
+        if (intent == null || intent.getExtras() == null) {
+            ingredients = new ArrayList<Ingredient>();
+            Log.d("SAVED_INGREDIENTS", "No Ingredients Saved");
+        }
+        else {
+            ingredients = intent.getExtras().getParcelableArrayList("ingredients");
+            String[] names = getIngredientNames();
+            for (int i = 0; i < names.length; i++)
+                Log.d("SAVED_INGREDIENTS", names[i]);
+        }
+
+
         mRecipeListLayout = findViewById(R.id.recipe_list);
         mSearchButton = findViewById(R.id.searchButton);
         mSearchButton.setOnClickListener(mSearchButtonListener);
@@ -127,5 +135,4 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
-
 }
