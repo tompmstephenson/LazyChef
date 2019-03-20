@@ -13,11 +13,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,9 +41,24 @@ public class Query {
     /* API Key. Right now, this is my personal API key. In the future we might want to change this
      * to a team-wide API key (I don't want my debit card to be charged...
      */
-    private final String MASHAPE_AUTH = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
-
+    //private final String MASHAPE_AUTH = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
+    private final String MASHAPE_AUTH  = "171d4e42a2mshc256c66ea6fac0ep10200fjsn8c8ab6401453";
     List<Recipe> recipes = new ArrayList<>();
+
+    public void getRecipeImage(final Recipe recipe) {
+        ImageRequest request = new ImageRequest(recipe.getImageURL(),
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        recipe.setImage(bitmap);
+                    }
+                }, 0, 0, null,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO
+                    }
+                });
+    }
 
     public void getRecipeDetails(String request, final String recipeName, final Activity activity) {
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
@@ -98,6 +115,7 @@ public class Query {
     public void addRecipe(JSONObject jsonRecipeDetails, String recName, Activity activity) {
         try {
             String instr = jsonRecipeDetails.getString("instructions");
+            String imageURL = jsonRecipeDetails.getString("image");
             int preptime = jsonRecipeDetails.getInt("readyInMinutes");
             int servings = jsonRecipeDetails.getInt("servings");
 
@@ -119,7 +137,8 @@ public class Query {
                 ingUnit = jsonIngredient.getString("unit");
                 ingList.add(new Ingredient(ingName, ingAmount, ingUnit));
             }
-            Recipe recipe = new Recipe(recName, ingList, instr, preptime, servings);
+            Recipe recipe = new Recipe(recName, ingList, instr, preptime, servings, imageURL, null);
+            getRecipeImage(recipe);
             recipes.add(recipe);
             MainActivity.createRecipeView(recipe, activity);
         }

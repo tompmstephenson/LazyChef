@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp">
+
+    <ImageView
+        android:id="@+id/food_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Garlic Noodles"
+        android:textSize="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/food_image"/>
+
+    <TextView
+        android:id="@+id/ingredients"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@id/food_image"
+        android:layout_marginLeft="10dp"
+        android:text="3 tablespoons butter, 1 tablespoon olive oil, 6-8 fresh garlic cloves, 2 scallions, 1-2 tablespoons fish sauce, 1-2 tablespoons oyster sauce,"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/food_image"
+        android:layout_below="@+id/ingredients"
+        android:text="Learn More"
+        android:textSize="10dp"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/colorAccent"/>
+</RelativeLayout>

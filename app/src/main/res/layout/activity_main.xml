@@ -8,21 +8,97 @@
     android:orientation="vertical"
     tools:context="com.example.thomasstephenson.lazychef.MainActivity">
 
+    
+    
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/message"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/title_home" />
+            android:layout_height="match_parent">
+
+            <ImageView
+            android:id="@+id/logo"
+            android:layout_width="100dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="25dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_logo"/>
+
+            <Button
+                android:id="@+id/searchButton"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="25dp"
+                android:layout_below="@id/logo"
+                android:layout_centerHorizontal="true"
+                android:text="Discover New Recipes"
+                android:textAllCaps="false"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:textColor="@color/colorAccent"/>
+
+            <Switch
+                android:id="@+id/pantry_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/searchButton"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Limit Recipes By Pantry Ingredients"
+                android:textSize="13dp"
+                android:thumbTint="@color/colorPrimaryDark"
+                android:switchPadding="2dp"/>
+
+            <Switch
+                android:id="@+id/vegetarian_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pantry_filter"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="Vegetarian"
+                android:textSize="13dp"
+                android:thumbTint="@color/colorPrimaryDark"
+                android:switchPadding="2dp"/>
+
+            <Switch
+                android:id="@+id/dairy_free_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pantry_filter"
+                android:layout_toRightOf="@id/vegetarian_filter"
+                android:layout_marginTop="5dp"
+                android:text="Dairy Free"
+                android:textSize="13dp"
+                android:thumbTint="@color/colorPrimaryDark"
+                android:switchPadding="2dp"/>
+
+            <Switch
+                android:id="@+id/gluton_free_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pantry_filter"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@id/vegetarian_filter"
+                android:text="Gluton Free"
+                android:textSize="13dp"
+                android:thumbTint="@color/colorPrimaryDark"
+                android:switchPadding="2dp"/>
+            
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gluton_free_filter"
+                android:layout_marginTop="35dp"
+                android:orientation="vertical"
+                android:id="@+id/recipe_list">
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </FrameLayout>
 

@@ -1,4 +1,6 @@
 package com.example.thomasstephenson.lazychef;
+import android.graphics.Bitmap;
+
 import java.util.List;
 import java.io.File;
 /**An instance of class Recipe represents a set of instructions
@@ -14,9 +16,9 @@ public class Recipe {
     private int prepTime;
     private int servings;
     private String imageURL;
-    private File image;
+    private Bitmap image;
 
-    public Recipe(String recName,List<Ingredient> ingList,String instr,int pTime,int recServings,String url,File img){
+    public Recipe(String recName,List<Ingredient> ingList,String instr,int pTime,int recServings,String url,Bitmap img){
         name = recName;
         ingredients = ingList;
         instructions = instr;
@@ -51,8 +53,8 @@ public class Recipe {
     public String getImageURL() { return imageURL; }
     public void setImageURL(String url){ imageURL = url; }
 
-    public File getImage() { return image; }
-    public void setImage(File img) { image = img; }
+    public Bitmap getImage() { return image; }
+    public void setImage(Bitmap img) { image = img; }
 
     public int getEstimatedCalories() {
         int totalCal = 0;
