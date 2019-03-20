@@ -1,42 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recipe_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="15dp">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/food_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"/>
+        android:layout_width="100dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/textView"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/food_image"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
         android:text="Garlic Noodles"
         android:textSize="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@id/food_image"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/food_image" />
 
     <TextView
         android:id="@+id/ingredients"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_toRightOf="@id/food_image"
-        android:layout_marginLeft="10dp"
-        android:text="3 tablespoons butter, 1 tablespoon olive oil, 6-8 fresh garlic cloves, 2 scallions, 1-2 tablespoons fish sauce, 1-2 tablespoons oyster sauce,"/>
+        android:gravity="center"
+        android:text="3 tablespoons butter, 1 tablespoon olive oil,"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/food_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/food_image"
-        android:layout_below="@+id/ingredients"
-        android:text="Learn More"
-        android:textSize="10dp"
-        android:textAllCaps="false"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/colorPrimary"
-        android:textColor="@color/colorAccent"/>
-</RelativeLayout>
+        android:text="Learn More"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

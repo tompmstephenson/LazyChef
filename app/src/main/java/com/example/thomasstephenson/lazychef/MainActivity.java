@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -67,46 +69,45 @@ public class MainActivity extends AppCompatActivity {
         query.QueryIngredientsHelper(ingredients, this);
     }
 
-    public static Bitmap getBitMap(String url) {
-        try {
-            InputStream in = new java.net.URL(url).openStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(in);//BitmapFactory.decodeStream(in, null, null);
-            in.close();
-            return bitmap;
-        }
-        catch (Exception e) {
-            //Log.d("ERROR", e.getMessage());
-            e.printStackTrace();
-            return null;
+    public static void addBitmapImage(int index, Bitmap bitmap) {
+        ViewGroup recipeViewGroup = (ViewGroup) mRecipeListLayout.getChildAt(index);
+        if (recipeViewGroup != null) {
+            ImageView imageView = (ImageView) recipeViewGroup.getChildAt(0);
+            imageView.setImageBitmap(bitmap);
         }
     }
 
     public static void createRecipeView(Recipe recipe, Activity activity) {
-        //Log.d("RECIPE", recipe.getInstructions());
-
-        //activity.setContentView(mRecipeListLayout);
-        Log.d("UPDATE", "UPDATED VIEWS");
-        String imageURL = recipe.getImageURL();
-        if (imageURL == null) {
-            Log.d("ERROR", "IMAGE URL is null");
-            return;
+        String recipeName = recipe.getName();
+        if (recipeName.length() > 45)
+            recipeName = recipeName.substring(0, 42) + "...";
+        List <Ingredient> ingredients = recipe.getListIngredients();
+        StringBuilder ingredientsStrBuilder = new StringBuilder();
+        ingredientsStrBuilder.append("Ingredients: ");
+        for (int i = 0; i < ingredients.size(); i++) {
+            if (i == ingredients.size() - 1)
+                ingredientsStrBuilder.append(ingredients.get(i).getName());
+            else
+                ingredientsStrBuilder.append(ingredients.get(i).getName() + ", ");
         }
-        Bitmap bitmap = getBitMap(imageURL);
-        addRelativeLayout(recipe.getName(), bitmap, activity);
+        String ingredientsDescript = ingredientsStrBuilder.toString();
+        if (ingredientsDescript.length() > 60)
+            ingredientsDescript = ingredientsDescript.substring(0, 57) + "...";
+
+        Log.d("CREATING RECIPE VIEW", recipeName);
+        addRelativeLayout(recipeName, ingredientsDescript, activity);
+        Log.d("CREATING RECIPE VIEW", recipeName + " view has been created");
     }
 
-    private static void addRelativeLayout(String recipeName, Bitmap bitmap, Activity activity) {
+    private static void addRelativeLayout(String recipeName, String ingredients, Activity activity) {
         View recipeView = activity.getLayoutInflater().inflate(R.layout.recipe_layout, null);
         ViewGroup recipeViewGroup = (ViewGroup) recipeView;
-        ImageView imageView =  (ImageView) recipeViewGroup.getChildAt(0);
-        imageView.setImageBitmap(bitmap);
         TextView recipeTitleView = (TextView) recipeViewGroup.getChildAt(1);
-        if (recipeName != null) {
-            if (recipeName.length() > 25)
-                recipeName = recipeName.substring(0, 22) + "...";
-            recipeTitleView.setText(recipeName);
-            mRecipeListLayout.addView(recipeView);
-        }
+        recipeTitleView.setText(recipeName);
+        mRecipeListLayout.addView(recipeView);
+        TextView ingredientsView = (TextView) recipeViewGroup.getChildAt(2);
+        ingredientsView.setText(ingredients);
+
     }
 
 

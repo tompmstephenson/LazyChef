@@ -8,8 +8,6 @@
     android:orientation="vertical"
     tools:context="com.example.thomasstephenson.lazychef.MainActivity">
 
-    
-    
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
@@ -87,16 +85,19 @@
                 android:textSize="13dp"
                 android:thumbTint="@color/colorPrimaryDark"
                 android:switchPadding="2dp"/>
-            
-            
-            <LinearLayout
-                android:layout_width="match_parent"
+
+            <ScrollView
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/gluton_free_filter"
-                android:layout_marginTop="35dp"
-                android:orientation="vertical"
-                android:id="@+id/recipe_list">
-            </LinearLayout>
+                android:layout_marginTop="35dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/recipe_list">
+                </LinearLayout>
+            </ScrollView>
 
         </RelativeLayout>
 
