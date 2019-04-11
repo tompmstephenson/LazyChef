@@ -1,6 +1,7 @@
 package com.example.thomasstephenson.lazychef;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     Button mSearchButton;
     static LinearLayout mRecipeListLayout;
     ArrayList <Ingredient> ingredients;
+    static ArrayList <Recipe> recipeResults;
+    static ArrayList <Button> mRecipeButtons;
+    private static Context mContext;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,6 +54,28 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private static View.OnClickListener mRecipeButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Button recipeButton = (Button) view;
+            int index = mRecipeButtons.indexOf(recipeButton);
+
+            try {
+                Recipe recipe = recipeResults.get(index);
+                Log.d("SAVED_INGREDIENTS", "Saved Recipe: " + recipe.getName());
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("recipe", recipe);
+                Log.d("SAVED_INGREDIENTS", "Recipe Instructions: " + recipe.getInstructions());
+                Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+            }
+            catch (Exception e) {
+                Log.d("SAVED_INGREDIENTS", "recipe #" + index  + " could not be found");
+            }
+        }
+    };
+
     private void searchForRecipes() {
         String[] ingredients = getIngredientNames();
         Query query = new Query();
@@ -65,11 +91,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String[] getIngredientNames() {
-        String [] ingredientNames = new String[ingredients.size()];
-        for (int i = 0; i < ingredients.size(); i++) {
-            ingredientNames[i] = ingredients.get(i).getName();
+        if (ingredients != null) {
+            String[] ingredientNames = new String[ingredients.size()];
+            for (int i = 0; i < ingredients.size(); i++) {
+                ingredientNames[i] = ingredients.get(i).getName();
+            }
+            return ingredientNames;
         }
-        return ingredientNames;
+        else {
+            return null;
+        }
     }
 
     public static void createRecipeView(Recipe recipe, Activity activity) {
@@ -90,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             ingredientsDescript = ingredientsDescript.substring(0, 57) + "...";
 
         addRecipeLayout(recipeName, ingredientsDescript, activity);
+        recipeResults.add(recipe);
     }
 
     private static void addRecipeLayout(String recipeName, String ingredients, Activity activity) {
@@ -99,8 +131,10 @@ public class MainActivity extends AppCompatActivity {
         recipeTitleView.setText(recipeName);
         TextView ingredientsView = (TextView) recipeViewGroup.getChildAt(2);
         ingredientsView.setText(ingredients);
+        Button recipeButton = (Button) recipeViewGroup.getChildAt(3);
+        recipeButton.setOnClickListener(mRecipeButtonListener);
+        mRecipeButtons.add(recipeButton);
         mRecipeListLayout.addView(recipeView);
-
     }
 
 
@@ -115,17 +149,18 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("SAVED_INGREDIENTS", "STARTING MainActivity");
         Intent intent = getIntent();
-        if (intent == null || intent.getExtras() == null) {
-            ingredients = new ArrayList<Ingredient>();
-            Log.d("SAVED_INGREDIENTS", "No Ingredients Saved");
-        }
-        else {
+        try {
             ingredients = intent.getExtras().getParcelableArrayList("ingredients");
-            String[] names = getIngredientNames();
-            for (int i = 0; i < names.length; i++)
-                Log.d("SAVED_INGREDIENTS", names[i]);
+            Log.d("SAVED_INGREDIENTS", "ingredients have been retrieved");
+        }
+        catch (Exception e) {
+            Log.d("SAVED_INGREDIENTS", "ingredients could not be retrieved");
         }
 
+        mContext = this;
+
+        recipeResults = new ArrayList<>();
+        mRecipeButtons = new ArrayList<>();
 
         mRecipeListLayout = findViewById(R.id.recipe_list);
         mSearchButton = findViewById(R.id.searchButton);
