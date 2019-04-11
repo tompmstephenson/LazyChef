@@ -1,10 +1,15 @@
 package com.example.thomasstephenson.lazychef;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
 import java.io.File;
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /**An instance of class Recipe represents a set of instructions
  * for preparing a certain meal. Includes a list of all necessary ingredients
  * Created by Jack on 3/7/2019.
@@ -86,6 +91,21 @@ public class Recipe implements Parcelable {
         }
         return totalCal;
     }
+
+    public void saveRecipe(Context context) {
+        RecipeEntity recipeEntity = new RecipeEntity(this);
+
+        RecipeDao recipeDao = RecipeDatabase.getInstance(context.getApplicationContext()).getRecipeDao();
+        recipeDao.insert(recipeEntity);
+
+        IngredientDao ingredientDao = IngredientDatabase.getInstance(context.getApplicationContext()).getIngredientDao();
+
+        for (Ingredient ingredient: ingredients) {
+            IngredientEntity ingredientEntity = new IngredientEntity(ingredient, recipeEntity);
+            ingredientDao.insert(ingredientEntity);
+        }
+    }
+
 
 
     @Override
