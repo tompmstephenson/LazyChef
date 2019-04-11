@@ -24,7 +24,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     private View.OnClickListener mSaveButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            
+
         }
     };
 
