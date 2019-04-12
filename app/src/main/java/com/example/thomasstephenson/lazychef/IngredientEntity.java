@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.graphics.BitmapFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -32,10 +34,11 @@ public class IngredientEntity {
     public String type;
     public int calories;
     public byte[] image;
+    public String imageURL;
 
     public int recipeId;
 
-    public IngredientEntity(String name, int amount, String unit, String type, int calories, byte[] image, final int recipeId) {
+    public IngredientEntity(String name, int amount, String unit, String type, int calories, byte[] image, String imageURL, final int recipeId) {
         this.name = name;
         this.amount = amount;
         this.unit = unit;
@@ -43,6 +46,7 @@ public class IngredientEntity {
         this.calories = calories;
         this.image = image;
         this.recipeId = recipeId;
+        this.imageURL = imageURL;
     }
 
     public IngredientEntity(Ingredient ingredient, RecipeEntity recipeEntity) {
@@ -57,6 +61,13 @@ public class IngredientEntity {
         byte[] byteArray = stream.toByteArray();
         this.image = byteArray;
         this.recipeId = recipeEntity.id;
+        this.imageURL = ingredient.getImageURL();
+    }
+
+    public Ingredient toIngredient() {
+        ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(image);
+        Bitmap bitmapImage = BitmapFactory.decodeStream(arrayInputStream);
+        return new Ingredient(name, amount, type, unit, calories, imageURL, bitmapImage);
     }
 
 }
