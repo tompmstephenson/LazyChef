@@ -1,12 +1,15 @@
 package com.example.thomasstephenson.lazychef;
 
+import android.arch.persistence.room.Index;
 import android.graphics.Bitmap;
 
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.PrimaryKey;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
 
-import static androidx.room.ForeignKey.CASCADE;
+import java.io.ByteArrayOutputStream;
+
+import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
  * This represents an ingredient of a recipe that has been saved to the phone. You usually aren't
@@ -14,10 +17,11 @@ import static androidx.room.ForeignKey.CASCADE;
  * objects in the database.
  */
 
-@Entity(foreignKeys = @ForeignKey(entity = Recipe.class,
+@Entity(foreignKeys = @ForeignKey(entity = RecipeEntity.class,
                         parentColumns = "id",
                         childColumns = "recipeId",
-                        onDelete = CASCADE))
+                        onDelete = CASCADE),
+        indices = {@Index("recipeId")})
 public class IngredientEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -27,11 +31,11 @@ public class IngredientEntity {
     public String unit;
     public String type;
     public int calories;
-    public Bitmap image;
+    public byte[] image;
 
     public int recipeId;
 
-    public IngredientEntity(String name, int amount, String unit, String type, int calories, Bitmap image, final int recipeId) {
+    public IngredientEntity(String name, int amount, String unit, String type, int calories, byte[] image, final int recipeId) {
         this.name = name;
         this.amount = amount;
         this.unit = unit;
@@ -47,7 +51,11 @@ public class IngredientEntity {
         this.unit = ingredient.getUnit();
         this.type = ingredient.getType();
         this.calories = ingredient.getCalories();
-        this.image = ingredient.getImage();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Bitmap bmp = ingredient.getImage();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        this.image = byteArray;
         this.recipeId = recipeEntity.id;
     }
 
