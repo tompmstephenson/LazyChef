@@ -9,6 +9,7 @@ import java.io.File;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.util.Log;
 
 /**An instance of class Recipe represents a set of instructions
  * for preparing a certain meal. Includes a list of all necessary ingredients
@@ -87,7 +88,12 @@ public class Recipe implements Parcelable {
     public int getEstimatedCalories() {
         int totalCal = 0;
         for(int i=0;i<ingredients.size();i++) {
-            totalCal += (ingredients.get(i).getCalories() * ingredients.get(i).getAmount());
+            try {
+                totalCal += (ingredients.get(i).getCalories() * ingredients.get(i).getAmount());
+            }
+            catch (Exception e) {
+                Log.d("SAVED_INGREDIENTS", e.getMessage());
+            }
         }
         return totalCal;
     }
@@ -98,12 +104,15 @@ public class Recipe implements Parcelable {
         RecipeDao recipeDao = RecipeDatabase.getInstance(context.getApplicationContext()).getRecipeDao();
         recipeDao.insert(recipeEntity);
 
+
+        /*
         IngredientDao ingredientDao = IngredientDatabase.getInstance(context.getApplicationContext()).getIngredientDao();
 
         for (Ingredient ingredient: ingredients) {
             IngredientEntity ingredientEntity = new IngredientEntity(ingredient, recipeEntity);
             ingredientDao.insert(ingredientEntity);
         }
+        */
     }
 
 

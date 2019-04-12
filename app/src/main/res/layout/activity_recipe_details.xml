@@ -48,7 +48,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_details_servings" />
+        app:layout_constraintTop_toBottomOf="@+id/recipe_details_servings"
+        android:scrollbars = "vertical"/>
 
     <Button
         android:id="@+id/recipe_details_save"
