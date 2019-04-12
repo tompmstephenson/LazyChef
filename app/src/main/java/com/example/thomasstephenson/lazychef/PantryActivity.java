@@ -57,22 +57,24 @@ public class PantryActivity extends AppCompatActivity {
         public void onClick(View view) {
             Button pantryButton = (Button) view;
             int index = pantryButtons.indexOf(pantryButton);
-            if (index < 0)
-            {
-                Log.d("SAVED_INGREDIENTS", "Button could not be found: " + pantryButton.getText());
-            }
-            else {
+
+            try {
                 Ingredient ingredient = ingredientsResults.get(index);
-                Log.d("SAVED_INGREDIENTS", "Saved Ingredient: " + ingredient.getName());
                 savedIngredients.add(ingredient);
+                Log.d("SAVED_INGREDIENTS", "Saved Ingredient: " + ingredient.getName());
+            }
+            catch (Exception e) {
+                Log.d("SAVED_INGREDIENTS", "ingredient #" + index  + " could not be found");
             }
         }
     };
 
-    private void searchForIngredients(String ingredient) {
+    private void searchForIngredients(String ingredientName) {
         Query query = new Query();
         ingredientsResults = new ArrayList<Ingredient>();
-        query.queryIngredients(ingredient, this);
+        pantryButtons = new ArrayList<Button>();
+        mIngredientListLayout.removeAllViewsInLayout();
+        query.queryIngredients(ingredientName, this);
     }
 
     public static void addBitmapImage(int index, Bitmap bitmap) {
@@ -136,7 +138,7 @@ public class PantryActivity extends AppCompatActivity {
         try {
             this.getSupportActionBar().hide();
         }
-        catch (NullPointerException e){ }
+        catch (Exception e){ }
 
         setContentView(R.layout.activity_pantry);
         mSearchView = findViewById(R.id.search);

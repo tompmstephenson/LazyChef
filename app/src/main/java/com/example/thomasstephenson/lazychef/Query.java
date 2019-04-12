@@ -46,19 +46,32 @@ public class Query {
     List<Recipe> recipes = new ArrayList<>();
     List<Ingredient> ingredients = new ArrayList<>();
 
-    public void getRecipeImage(final Recipe recipe, final Activity activity) {
+    public void addRecipeImageToMain(final Recipe recipe, final Activity activity) {
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         ImageRequest request = new ImageRequest(recipe.getImageURL(),
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
                         recipe.setImage(bitmap);
-                        int index = recipes.indexOf(recipe);
-                        //Log.d("CREATING RECIPE VIEW", "Creating Recipe Image #" + index + " out of " + recipes.size());
-                        //for (Recipe r : recipes) {
-                            //Log.d("CREATING RECIPE VIEW", r.getName());
-                        //}
                         MainActivity.addBitmapImage(recipes.indexOf(recipe), bitmap);
+                    }
+                }, 0, 0, null,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO
+                    }
+                });
+        requestQueue.add(request);
+    }
+
+    public void addRecipeImageToRecipeDetails(final Recipe recipe, final Activity activity) {
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        ImageRequest request = new ImageRequest(recipe.getImageURL(),
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        recipe.setImage(bitmap);
+                        RecipeDetailsActivity.setRecipeImage(bitmap);
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
@@ -161,7 +174,7 @@ public class Query {
             Recipe recipe = new Recipe(recName, ingList, instr, preptime, servings, imageURL, null);
             recipes.add(recipe);
             MainActivity.createRecipeView(recipe, activity);
-            getRecipeImage(recipe, activity);
+            addRecipeImageToMain(recipe, activity);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -218,6 +231,7 @@ public class Query {
                 String imageName = jsonIngredient.getString("image");
                 String imageURL = "https://spoonacular.com/cdn/ingredients_100x100/" +imageName;
                 String type = jsonIngredient.getString("aisle");
+                Log.d("SAVED_INGREDIENTS", name);
                 Ingredient ingredient = new Ingredient(name, 0, type, null, 0, imageURL, null);
                 ingredients.add(ingredient);
                 PantryActivity.createIngredientView(ingredient, activity);
