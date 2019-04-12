@@ -28,6 +28,7 @@ public class PantryUnitTest {
         list.add(chicken);
         pantry.addIngredients(list);
 
+        //Tests Results of Search Query in hard-coded pantry
         assertTrue(pantry.checkIngredient("Spaghetti"));
         assertTrue(pantry.checkIngredient("Meatballs"));
         assertTrue(pantry.checkIngredient("Chicken"));
@@ -54,6 +55,7 @@ public class PantryUnitTest {
         list.add(salt);
         pantry.addIngredients(list);
 
+        //Tests that list data added to pantry is stored properly
         assertEquals(list,pantry.getIngredientList());
 
     }
@@ -76,6 +78,7 @@ public class PantryUnitTest {
         list.add(salt);
         pantry.addIngredients(list);
 
+        //Tests that removed data is no longer in pantry object
         assertTrue(pantry.checkIngredient("Chicken"));
         pantry.removeIngredient("Chicken");
         assertFalse(pantry.checkIngredient("Chicken"));
@@ -102,6 +105,7 @@ public class PantryUnitTest {
         fullList.add(meatballs);
         pantry.addIngredients(fullList);
 
+        //Tests that all data is deleted from the pantry object in memory
         assertNotEquals(emptyList,pantry.getIngredientList());
         pantry.clearPantry();
         assertEquals(emptyList,pantry.getIngredientList());

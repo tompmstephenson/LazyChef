@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 
 public class IngredientUnitTest {
     //Tests for Ingredient object functionality
+    //Testing name functionality, important especially for Pantry searching
     @Test
     public void test_IngredientNameParameter() throws Exception {
         String name = "Spaghetti";
@@ -26,13 +27,14 @@ public class IngredientUnitTest {
 
         //Test name parameter methods and memory mgmt
         Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
-        assertEquals(name,spaghetti.getName());
+        assertEquals(name,spaghetti.getName()); //Memory mgmt test
         spaghetti.setName("Pizza");
-        assertNotEquals(name,spaghetti.getName());
+        assertNotEquals(name,spaghetti.getName()); //Ensures parameter can be properly set and updated
         assertEquals("Pizza",spaghetti.getName());
 
     }
 
+    //Test Amount Parameter
     @Test
     public void test_IngredientAmountParameter() throws Exception {
         String name = "Spaghetti";
@@ -62,11 +64,11 @@ public class IngredientUnitTest {
         String imageURL = "www.example.com";
         Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
-        //Test name parameter methods and memory mgmt
+        //Test unit parameter methods and memory mgmt
         Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
-        assertEquals(unit,spaghetti.getUnit());
+        assertEquals(unit,spaghetti.getUnit()); //Memory mgmt test
         spaghetti.setUnit("oz");
-        assertNotEquals(unit,spaghetti.getUnit());
+        assertNotEquals(unit,spaghetti.getUnit()); //Ensures parameter can be properly set and updated
         assertEquals("oz",spaghetti.getUnit());
 
     }
@@ -81,11 +83,11 @@ public class IngredientUnitTest {
         String imageURL = "www.example.com";
         Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
-        //Test name parameter methods and memory mgmt
+        //Test type parameter methods and memory mgmt
         Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
-        assertEquals(type,spaghetti.getType());
+        assertEquals(type,spaghetti.getType()); //Memory mgmt test
         spaghetti.setType("Meat");
-        assertNotEquals(type,spaghetti.getType());
+        assertNotEquals(type,spaghetti.getType()); //Ensures parameter can be properly set and updated
         assertEquals("Meat",spaghetti.getType());
 
     }
@@ -100,11 +102,11 @@ public class IngredientUnitTest {
         String imageURL = "www.example.com";
         Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
-        //Test name parameter methods and memory mgmt
+        //Test calorie parameter methods and memory mgmt
         Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
-        assertEquals(calories,spaghetti.getCalories());
+        assertEquals(calories,spaghetti.getCalories()); //Memory mgmt test
         spaghetti.setCalories(600);
-        assertNotEquals(calories,spaghetti.getCalories());
+        assertNotEquals(calories,spaghetti.getCalories()); //Ensures parameter can be properly set and updated
         assertEquals(600,spaghetti.getCalories());
 
     }
@@ -119,11 +121,11 @@ public class IngredientUnitTest {
         String imageURL = "www.example.com";
         Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
-        //Test name parameter methods and memory mgmt
+        //Test imageURL parameter methods and memory mgmt
         Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
-        assertEquals(imageURL,spaghetti.getImageURL());
+        assertEquals(imageURL,spaghetti.getImageURL()); //Memory mgmt test
         spaghetti.setImageURL("www.anothersite.com");
-        assertNotEquals(imageURL,spaghetti.getImageURL());
+        assertNotEquals(imageURL,spaghetti.getImageURL()); //Ensures parameter can be properly set and updated
         assertEquals("www.anothersite.com",spaghetti.getImageURL());
 
     }

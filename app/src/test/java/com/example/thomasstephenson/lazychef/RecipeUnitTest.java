@@ -193,7 +193,7 @@ public class RecipeUnitTest {
         //Test Construction and Data mgmt
         Recipe recipe = new Recipe(name,list,instructions,prepTime,servings,imageURL,file3);
 
-        assertEquals(1150,recipe.getEstimatedCalories());
+        assertEquals(1150,recipe.getEstimatedCalories()); //Tests proper calorie calculations
 
 
     }
