@@ -2,9 +2,9 @@ package com.example.thomasstephenson.lazychef;
 
 import android.content.Context;
 
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
+import android.arch.persistence.room.Database;
+import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
 
 /**
  * This is the database where the ingredients are stored. Use getInstance().getIngredientDao() to get an
@@ -12,7 +12,8 @@ import androidx.room.RoomDatabase;
  */
 
 @Database(entities = {IngredientEntity.class, RecipeEntity.class},
-            version = 1)
+            version = 1,
+            exportSchema = false)
 public abstract class IngredientDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "ingredientDatabase.db";

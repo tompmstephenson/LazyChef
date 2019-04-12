@@ -7,8 +7,8 @@ import android.os.Parcelable;
 import java.util.List;
 import java.io.File;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
 /**An instance of class Recipe represents a set of instructions
  * for preparing a certain meal. Includes a list of all necessary ingredients
