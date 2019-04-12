@@ -1,9 +1,12 @@
 package com.example.thomasstephenson.lazychef;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.graphics.Bitmap;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+import java.io.ByteArrayOutputStream;
 
 
 /**
@@ -19,13 +22,14 @@ public class RecipeEntity {
 
 
     public String name;
-    public Bitmap image;
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    public byte[] image;
     public String instructions;
     public int prepTime;
     public int estimatedCalories;
     public int servings;
 
-    public RecipeEntity(String name, Bitmap image, String instructions, int prepTime, int estimatedCalories, int servings) {
+    public RecipeEntity(String name, byte[] image, String instructions, int prepTime, int estimatedCalories, int servings) {
         this.name = name;
         this.image = image;
         this.instructions = instructions;
@@ -36,7 +40,11 @@ public class RecipeEntity {
 
     public RecipeEntity(Recipe recipe) {
         this.name = recipe.getName();
-        this.image = recipe.getImage();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Bitmap bmp = recipe.getImage();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        this.image = byteArray;
         this.instructions = recipe.getInstructions();
         this.prepTime = recipe.getPrepTime();
         this.estimatedCalories = recipe.getEstimatedCalories();
