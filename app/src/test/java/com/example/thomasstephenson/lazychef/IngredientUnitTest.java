@@ -11,20 +11,21 @@ import static org.junit.Assert.*;
  * Local unit test for Ingredient object class, which will execute on the development machine (host).
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+
 public class IngredientUnitTest {
     //Tests for Ingredient object functionality
     @Test
     public void test_IngredientNameParameter() throws Exception {
         String name = "Spaghetti";
         int amount = 1;
+        String type = "Pasta";
         String unit = "lbs";
-        String type = "unknown";
         int calories = 400;
         String imageURL = "www.example.com";
-        Bitmap file = BitmapFactory.decodeFile("../../../photos/spaghetti.jpg");
+        Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
         //Test name parameter methods and memory mgmt
-        Ingredient spaghetti = new Ingredient(name,amount,unit,type,calories,imageURL,file);
+        Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
         assertEquals(name,spaghetti.getName());
         spaghetti.setName("Pizza");
         assertNotEquals(name,spaghetti.getName());
@@ -36,14 +37,14 @@ public class IngredientUnitTest {
     public void test_IngredientAmountParameter() throws Exception {
         String name = "Spaghetti";
         int amount = 1;
+        String type = "Pasta";
         String unit = "lbs";
-        String type = "unknown";
         int calories = 400;
         String imageURL = "www.example.com";
-        Bitmap file = BitmapFactory.decodeFile("../../../photos/spaghetti.jpg");
+        Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
         //Test amount parameter methods and memory mgmt
-        Ingredient spaghetti = new Ingredient(name,amount,unit,type,calories,imageURL,file);
+        Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
         assertEquals(amount,spaghetti.getAmount());
         spaghetti.setAmount(5);
         assertNotEquals(amount,spaghetti.getAmount());
@@ -55,17 +56,17 @@ public class IngredientUnitTest {
     public void test_IngredientUnitParameter() throws Exception {
         String name = "Spaghetti";
         int amount = 1;
+        String type = "Pasta";
         String unit = "lbs";
-        String type = "unknown";
         int calories = 400;
         String imageURL = "www.example.com";
-        Bitmap file = BitmapFactory.decodeFile("../../../photos/spaghetti.jpg");
+        Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
         //Test name parameter methods and memory mgmt
-        Ingredient spaghetti = new Ingredient(name,amount,unit,type,calories,imageURL,file);
+        Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
         assertEquals(unit,spaghetti.getUnit());
         spaghetti.setUnit("oz");
-        assertNotEquals(amount,spaghetti.getUnit());
+        assertNotEquals(unit,spaghetti.getUnit());
         assertEquals("oz",spaghetti.getUnit());
 
     }
@@ -74,18 +75,18 @@ public class IngredientUnitTest {
     public void test_IngredientTypeParameter() throws Exception {
         String name = "Spaghetti";
         int amount = 1;
+        String type = "Pasta";
         String unit = "lbs";
-        String type = "unknown";
         int calories = 400;
         String imageURL = "www.example.com";
-        Bitmap file = BitmapFactory.decodeFile("../../../photos/spaghetti.jpg");
+        Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
         //Test name parameter methods and memory mgmt
-        Ingredient spaghetti = new Ingredient(name,amount,unit,type,calories,imageURL,file);
+        Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
         assertEquals(type,spaghetti.getType());
-        spaghetti.setType("knownType");
+        spaghetti.setType("Meat");
         assertNotEquals(type,spaghetti.getType());
-        assertEquals("knownType",spaghetti.getType());
+        assertEquals("Meat",spaghetti.getType());
 
     }
 
@@ -93,14 +94,14 @@ public class IngredientUnitTest {
     public void test_IngredientCaloriesParameter() throws Exception {
         String name = "Spaghetti";
         int amount = 1;
+        String type = "Pasta";
         String unit = "lbs";
-        String type = "unknown";
         int calories = 400;
         String imageURL = "www.example.com";
-        Bitmap file = BitmapFactory.decodeFile("../../../photos/spaghetti.jpg");
+        Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
         //Test name parameter methods and memory mgmt
-        Ingredient spaghetti = new Ingredient(name,amount,unit,type,calories,imageURL,file);
+        Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
         assertEquals(calories,spaghetti.getCalories());
         spaghetti.setCalories(600);
         assertNotEquals(calories,spaghetti.getCalories());
@@ -112,14 +113,14 @@ public class IngredientUnitTest {
     public void test_IngredientImageURLParameter() throws Exception {
         String name = "Spaghetti";
         int amount = 1;
+        String type = "Pasta";
         String unit = "lbs";
-        String type = "unknown";
         int calories = 400;
         String imageURL = "www.example.com";
-        Bitmap file = BitmapFactory.decodeFile("../../../photos/spaghetti.jpg");
+        Bitmap file = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
 
         //Test name parameter methods and memory mgmt
-        Ingredient spaghetti = new Ingredient(name,amount,unit,type,calories,imageURL,file);
+        Ingredient spaghetti = new Ingredient(name,amount,type,unit,calories,imageURL,file);
         assertEquals(imageURL,spaghetti.getImageURL());
         spaghetti.setImageURL("www.anothersite.com");
         assertNotEquals(imageURL,spaghetti.getImageURL());
@@ -127,24 +128,6 @@ public class IngredientUnitTest {
 
     }
 
-    @Test
-    public void test_IngredientImageParameter() throws Exception {
-        String name = "Spaghetti";
-        int amount = 1;
-        String unit = "lbs";
-        String type = "unknown";
-        int calories = 400;
-        String imageURL = "www.example.com";
-        Bitmap file = BitmapFactory.decodeFile("../../../photos/spaghetti.jpg");
 
-        //Test name parameter methods and memory mgmt
-        Ingredient spaghetti = new Ingredient(name,amount,unit,type,calories,imageURL,file);
-        assertEquals(file,spaghetti.getImage());
-        Bitmap newImage = BitmapFactory.decodeFile("../../../photos/meatballs.jpg");
-        spaghetti.setImage(newImage);
-        assertNotEquals(file,spaghetti.getImage());
-        assertEquals(newImage,spaghetti.getImage());
-
-    }
 
 }

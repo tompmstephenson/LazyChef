@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 
 /**
  * Created by Jack on 3/19/2019.
@@ -18,10 +19,10 @@ public class RecipeUnitTest {
     @Test
     public void test_RecipeNameParameter() throws Exception {
         //Set up construction of a Recipe Object
-        Bitmap file1 = BitmapFactory.decodeFile("../../../photos/spaghetti.jpg");
-        Bitmap file2 = BitmapFactory.decodeFile("../../../../photos/meatballs.jpg");
-        Ingredient spaghetti = new Ingredient("Spaghetti",1,"lbs","unknown",400,"www.example.com",file1);
-        Ingredient meatballs = new Ingredient("Meatballs",5,"pieces","unknown",150,"www.example.com",file2);
+        Bitmap file1 = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
+        Bitmap file2 = BitmapFactory.decodeFile("../../../../../../../photos/meatballs.jpg");
+        Ingredient spaghetti = new Ingredient("Spaghetti",1,"Pasta","lbs",400,"www.example.com",file1);
+        Ingredient meatballs = new Ingredient("Meatballs",5,"Meat","pieces",150,"www.example.com",file2);
         String name = "Spaghetti and Meatballs";
         List<Ingredient> list = new ArrayList<Ingredient>();
         list.add(spaghetti);
@@ -30,7 +31,7 @@ public class RecipeUnitTest {
         int prepTime =30;
         int servings = 1;
         String imageURL = "www.example.com";
-        Bitmap file3 = BitmapFactory.decodeFile("../../../../photos/spaghettiMeatballs.jpg");
+        Bitmap file3 = BitmapFactory.decodeFile("../../../../../../../photos/spaghettiMeatballs.jpg");
 
         //Test Construction and Data mgmt
         Recipe recipe = new Recipe(name,list,instructions,prepTime,servings,imageURL,file3);
@@ -44,10 +45,10 @@ public class RecipeUnitTest {
     @Test
     public void test_RecipeIngredientListParameter() throws Exception {
         //Set up construction of a Recipe Object
-        Bitmap file1 = BitmapFactory.decodeFile("../../../photos/spaghetti.jpg");
-        Bitmap file2 = BitmapFactory.decodeFile("../../../../photos/meatballs.jpg");
-        Ingredient spaghetti = new Ingredient("Spaghetti",1,"lbs","unknown",400,"www.example.com",file1);
-        Ingredient meatballs = new Ingredient("Meatballs",5,"pieces","unknown",150,"www.example.com",file2);
+        Bitmap file1 = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
+        Bitmap file2 = BitmapFactory.decodeFile("../../../../../../../photos/meatballs.jpg");
+        Ingredient spaghetti = new Ingredient("Spaghetti",1,"Pasta","lbs",400,"www.example.com",file1);
+        Ingredient meatballs = new Ingredient("Meatballs",5,"Meat","pieces",150,"www.example.com",file2);
         String name = "Spaghetti and Meatballs";
         List<Ingredient> list = new ArrayList<Ingredient>();
         list.add(spaghetti);
@@ -56,7 +57,7 @@ public class RecipeUnitTest {
         int prepTime =30;
         int servings = 1;
         String imageURL = "www.example.com";
-        Bitmap file3 = BitmapFactory.decodeFile("../../../../photos/spaghettiMeatballs.jpg");
+        Bitmap file3 = BitmapFactory.decodeFile("../../../../../../../photos/spaghettiMeatballs.jpg");
 
         //Test Construction and Data mgmt
         Recipe recipe = new Recipe(name,list,instructions,prepTime,servings,imageURL,file3);
@@ -65,7 +66,137 @@ public class RecipeUnitTest {
         assertEquals(2,recipe.getListIngredients().size());
         list.add(meatballs);
         recipe.setListIngredients(list);
-        assertEquals(list,recipe.getName());
+        assertEquals(list,recipe.getListIngredients());
         assertEquals(3,recipe.getListIngredients().size());
     }
+
+    @Test
+    public void test_RecipeInstructionsParameter() throws Exception {
+        //Set up construction of a Recipe Object
+        Bitmap file1 = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
+        Bitmap file2 = BitmapFactory.decodeFile("../../../../../../../photos/meatballs.jpg");
+        Ingredient spaghetti = new Ingredient("Spaghetti",1,"Pasta","lbs",400,"www.example.com",file1);
+        Ingredient meatballs = new Ingredient("Meatballs",5,"Meat","pieces",150,"www.example.com",file2);
+        String name = "Spaghetti and Meatballs";
+        List<Ingredient> list = new ArrayList<Ingredient>();
+        list.add(spaghetti);
+        list.add(meatballs);
+        String instructions = "Example Instructions";
+        int prepTime =30;
+        int servings = 1;
+        String imageURL = "www.example.com";
+        Bitmap file3 = BitmapFactory.decodeFile("../../../../../../../photos/spaghettiMeatballs.jpg");
+
+        //Test Construction and Data mgmt
+        Recipe recipe = new Recipe(name,list,instructions,prepTime,servings,imageURL,file3);
+
+        assertEquals(instructions,recipe.getInstructions());
+        recipe.setInstructions("New Instructions");
+        assertNotEquals(instructions,recipe.getInstructions());
+        assertEquals("New Instructions",recipe.getInstructions());
+    }
+
+    @Test
+    public void test_RecipePrepTimeParameter() throws Exception {
+        //Set up construction of a Recipe Object
+        Bitmap file1 = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
+        Bitmap file2 = BitmapFactory.decodeFile("../../../../../../../photos/meatballs.jpg");
+        Ingredient spaghetti = new Ingredient("Spaghetti",1,"Pasta","lbs",400,"www.example.com",file1);
+        Ingredient meatballs = new Ingredient("Meatballs",5,"Meat","pieces",150,"www.example.com",file2);
+        String name = "Spaghetti and Meatballs";
+        List<Ingredient> list = new ArrayList<Ingredient>();
+        list.add(spaghetti);
+        list.add(meatballs);
+        String instructions = "Example Instructions";
+        int prepTime =30;
+        int servings = 1;
+        String imageURL = "www.example.com";
+        Bitmap file3 = BitmapFactory.decodeFile("../../../../../../../photos/spaghettiMeatballs.jpg");
+
+        //Test Construction and Data mgmt
+        Recipe recipe = new Recipe(name,list,instructions,prepTime,servings,imageURL,file3);
+
+        assertEquals(prepTime,recipe.getPrepTime());
+        recipe.setPrepTime(60);
+        assertNotEquals(prepTime,recipe.getPrepTime());
+        assertEquals(60,recipe.getPrepTime());
+    }
+
+    @Test
+    public void test_RecipeServingsParameter() throws Exception {
+        //Set up construction of a Recipe Object
+        Bitmap file1 = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
+        Bitmap file2 = BitmapFactory.decodeFile("../../../../../../../photos/meatballs.jpg");
+        Ingredient spaghetti = new Ingredient("Spaghetti",1,"Pasta","lbs",400,"www.example.com",file1);
+        Ingredient meatballs = new Ingredient("Meatballs",5,"Meat","pieces",150,"www.example.com",file2);
+        String name = "Spaghetti and Meatballs";
+        List<Ingredient> list = new ArrayList<Ingredient>();
+        list.add(spaghetti);
+        list.add(meatballs);
+        String instructions = "Example Instructions";
+        int prepTime =30;
+        int servings = 1;
+        String imageURL = "www.example.com";
+        Bitmap file3 = BitmapFactory.decodeFile("../../../../../../../photos/spaghettiMeatballs.jpg");
+
+        //Test Construction and Data mgmt
+        Recipe recipe = new Recipe(name,list,instructions,prepTime,servings,imageURL,file3);
+
+        assertEquals(servings,recipe.getServings());
+        recipe.setServings(10);
+        assertNotEquals(servings,recipe.getServings());
+        assertEquals(10,recipe.getServings());
+    }
+
+    @Test
+    public void test_RecipeImageURLParameter() throws Exception {
+        //Set up construction of a Recipe Object
+        Bitmap file1 = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
+        Bitmap file2 = BitmapFactory.decodeFile("../../../../../../../photos/meatballs.jpg");
+        Ingredient spaghetti = new Ingredient("Spaghetti",1,"Pasta","lbs",400,"www.example.com",file1);
+        Ingredient meatballs = new Ingredient("Meatballs",5,"Meat","pieces",150,"www.example.com",file2);
+        String name = "Spaghetti and Meatballs";
+        List<Ingredient> list = new ArrayList<Ingredient>();
+        list.add(spaghetti);
+        list.add(meatballs);
+        String instructions = "Example Instructions";
+        int prepTime =30;
+        int servings = 1;
+        String imageURL = "www.example.com";
+        Bitmap file3 = BitmapFactory.decodeFile("../../../../../../../photos/spaghettiMeatballs.jpg");
+
+        //Test Construction and Data mgmt
+        Recipe recipe = new Recipe(name,list,instructions,prepTime,servings,imageURL,file3);
+
+        assertEquals(imageURL,recipe.getImageURL());
+        recipe.setImageURL("www.anothersite.com");
+        assertNotEquals(imageURL,recipe.getImageURL());
+        assertEquals("www.anothersite.com",recipe.getImageURL());
+    }
+
+    @Test public void test_CaloriesTotalCalculator() throws Exception {
+        //Set up construction of a Recipe Object
+        Bitmap file1 = BitmapFactory.decodeFile("../../../../../../../photos/spaghetti.jpg");
+        Bitmap file2 = BitmapFactory.decodeFile("../../../../../../../photos/meatballs.jpg");
+        Ingredient spaghetti = new Ingredient("Spaghetti",1,"Pasta","lbs",400,"www.example.com",file1);
+        Ingredient meatballs = new Ingredient("Meatballs",5,"Meat","pieces",150,"www.example.com",file2);
+        String name = "Spaghetti and Meatballs";
+        List<Ingredient> list = new ArrayList<Ingredient>();
+        list.add(spaghetti);
+        list.add(meatballs);
+        String instructions = "Example Instructions";
+        int prepTime =30;
+        int servings = 1;
+        String imageURL = "www.example.com";
+        Bitmap file3 = BitmapFactory.decodeFile("../../../../../../../photos/spaghettiMeatballs.jpg");
+
+        //Test Construction and Data mgmt
+        Recipe recipe = new Recipe(name,list,instructions,prepTime,servings,imageURL,file3);
+
+        assertEquals(1150,recipe.getEstimatedCalories());
+
+
+    }
+
+
 }

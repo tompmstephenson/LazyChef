@@ -11,8 +11,9 @@ import java.util.*;
 
 public class QueryUnitTest {
 
+
     @Test
-    public void test_AddToQueryIngredientsMethod() {
+    public void test_RecipeImageRequest() {
         Query query = new Query();
         int preNames = query.getIngNames().length;
         query.AddToQueryIngredients("Apples");
