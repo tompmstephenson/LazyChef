@@ -1,4 +1,7 @@
 package com.example.thomasstephenson.lazychef;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -13,7 +16,10 @@ import java.io.File;
  * as that would require an extra API call in Query.
  */
 
+@Entity
 public class Ingredient implements Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    public int id;
 
     private String name;
     private int amount;
@@ -21,6 +27,7 @@ public class Ingredient implements Parcelable {
     private String type;
     private int calories;
     private String imageURL;
+    @Ignore
     private Bitmap image;
 
     public Ingredient(String name, int amount, String type, String unit, int cal, String imageURL, Bitmap image){
@@ -32,12 +39,12 @@ public class Ingredient implements Parcelable {
         this.imageURL = imageURL;
         this.image = image;
     }
-    public Ingredient(String name, int amount, String type, String unit, int cal){ //Constructor if image unavailable
+    public Ingredient(String name, int amount, String type, String unit, int calories){ //Constructor if image unavailable
         this.name = name;
         this.amount = amount;
         this.type = type;
         this.unit = unit;
-        this.calories = cal;;
+        this.calories = calories;;
     }
 
     protected Ingredient(Parcel in) {

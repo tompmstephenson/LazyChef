@@ -49,7 +49,7 @@ public class RecipeEntity {
         this.name = recipe.getName();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         Bitmap bmp = recipe.getImage();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         this.image = byteArray;
         this.instructions = recipe.getInstructions();

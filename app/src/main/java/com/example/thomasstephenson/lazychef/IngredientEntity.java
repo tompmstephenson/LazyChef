@@ -57,7 +57,7 @@ public class IngredientEntity {
         this.calories = ingredient.getCalories();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         Bitmap bmp = ingredient.getImage();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         this.image = byteArray;
         this.recipeId = recipeEntity.id;
