@@ -55,11 +55,11 @@ public class IngredientEntity {
         this.unit = ingredient.getUnit();
         this.type = ingredient.getType();
         this.calories = ingredient.getCalories();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Bitmap bmp = ingredient.getImage();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        this.image = byteArray;
+        //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        //Bitmap bmp = ingredient.getImage();
+        //bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        //byte[] byteArray = stream.toByteArray();
+        //this.image = byteArray;
         this.recipeId = recipeEntity.id;
         this.imageURL = ingredient.getImageURL();
     }

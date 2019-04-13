@@ -21,6 +21,9 @@ android {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
     }
+    testOptions {
+        unitTests.returnDefaultValues =true
+    }
 }
 
 dependencies {

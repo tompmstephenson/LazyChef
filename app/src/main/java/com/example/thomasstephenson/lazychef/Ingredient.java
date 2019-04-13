@@ -78,7 +78,7 @@ public class Ingredient implements Parcelable {
     public void setType(String ingType) { type = ingType; }
 
     public String getUnit() { return unit; }
-    public void setUnit(String ingUnit) { name = ingUnit; }
+    public void setUnit(String ingUnit) { unit = ingUnit; }
 
     public int getCalories() { return calories; }
     public void setCalories(int ingCal) { calories = ingCal; }

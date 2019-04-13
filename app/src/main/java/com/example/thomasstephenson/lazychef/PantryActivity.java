@@ -3,6 +3,7 @@ package com.example.thomasstephenson.lazychef;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class PantryActivity extends AppCompatActivity {
     static ArrayList <Button> pantryButtons;
     static ArrayList <Ingredient> savedIngredients;
     static ArrayList <Ingredient> ingredientsResults;
+    static Activity mContext;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,6 +62,8 @@ public class PantryActivity extends AppCompatActivity {
 
             try {
                 Ingredient ingredient = ingredientsResults.get(index);
+                IngredientsAsync async = new IngredientsAsync(mContext, ingredient);
+                async.execute();
                 savedIngredients.add(ingredient);
                 Log.d("SAVED_INGREDIENTS", "Saved Ingredient: " + ingredient.getName());
             }
@@ -122,6 +126,7 @@ public class PantryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         ingredientsResults = new ArrayList<Ingredient>();
         pantryButtons = new ArrayList<Button>();
         Log.d("SAVED_INGREDIENTS", "STARTING PantryActivity");
@@ -147,12 +152,60 @@ public class PantryActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.getMenu().findItem(R.id.navigation_pantry).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
+        IngredientsGetAsync async = new IngredientsGetAsync(mContext);
+        async.execute();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("ingredients", savedIngredients);
+    }
+
+    private static class IngredientsAsync extends AsyncTask<Void, Void, Integer> {
+
+        Activity context;
+        Ingredient ingredient;
+
+        public IngredientsAsync(Activity context, Ingredient ingredient) {
+            this.context = context;
+            this.ingredient = ingredient;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            PantryDao pantryDao = PantryDatabase.getInstance(context).getPantryDao();
+            pantryDao.insert(ingredient);
+            return null;
+        }
+    }
+
+    private class IngredientsGetAsync extends AsyncTask<Void, Void, Integer> {
+
+        Activity context;
+
+        public IngredientsGetAsync(Activity context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            PantryDao pantryDao = PantryDatabase.getInstance(context).getPantryDao();
+            final List <Ingredient> ingredients = pantryDao.getSavedPantry();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < ingredients.size(); i++) {
+                        createIngredientView(ingredients.get(i), mContext);
+                        Query query = new Query();
+                        query.getIngredientImage(ingredients.get(i), mContext, i);
+                    }
+                }
+            });
+            return null;
+        }
     }
 
 }

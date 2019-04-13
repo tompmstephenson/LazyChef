@@ -1,15 +1,20 @@
 package com.example.thomasstephenson.lazychef;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
 
@@ -24,7 +29,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     private View.OnClickListener mSaveButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
+            RecipesAsync async = new RecipesAsync(RecipeDetailsActivity.this, recipe);
+            async.execute();
         }
     };
 
@@ -37,11 +43,11 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     }
 
     public void setRecipeServings(int servings) {
-        mRecipeInstructions.setText("Servings: " + servings);
+        mServings.setText("Servings: " + servings);
     }
 
     public void setRecipePrepTime(int prepTime) {
-        mRecipeInstructions.setText("Prep Time: " + prepTime + " minutes");
+        mPrepTime.setText("Prep Time: " + prepTime + " minutes");
     }
 
     public static void setRecipeImage(Bitmap image) {
@@ -78,6 +84,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         mServings = findViewById(R.id.recipe_details_servings);
         mRecipeImage = findViewById(R.id.recipe_details_image);
         mRecipeInstructions = findViewById(R.id.recipe_details_instructions);
+        mRecipeInstructions.setMovementMethod(new ScrollingMovementMethod());
         mSaveButton = findViewById(R.id.recipe_details_save);
         mSaveButton.setOnClickListener(mSaveButtonListener);
 
@@ -89,6 +96,23 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
         catch (Exception e) {
             Log.d("SAVED_INGREDIENTS", "recipe could not be retrieved: " + e.getMessage());
+        }
+    }
+
+    private static class RecipesAsync extends AsyncTask<Void, Void, Integer> {
+
+        Activity context;
+        Recipe recipe;
+
+        public RecipesAsync(Activity context, Recipe recipe) {
+            this.context = context;
+            this.recipe = recipe;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            recipe.saveRecipe(context);
+            return null;
         }
     }
 }
