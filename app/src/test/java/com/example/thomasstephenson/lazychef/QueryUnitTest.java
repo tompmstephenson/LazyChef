@@ -11,28 +11,26 @@ import java.util.*;
 
 public class QueryUnitTest {
 
-
     @Test
-    public void test_RecipeImageRequest() {
+    public void test_AddToQueryIngredientsMethod() {
         Query query = new Query();
-        int preNames = query.getIngNames().length;
+        int preNames = query.ingredients.size();
         query.AddToQueryIngredients("Apples");
-        int postNames = query.getIngNames().length;
+        int postNames = query.ingredients.size();
 
         assertNotEquals(preNames,postNames);
-
-        String apples = query.getIngNames()[(postNames - 1)];
+        String apples = query.ingredients.get(postNames - 1).getName();
         assertEquals(apples,"Apples");
     }
 
     @Test
     public void test_DeleteFromQueryIngredientsMethod() {
         Query query = new Query();
-        String[] names = query.getIngNames();
+        List<Ingredient> names = query.ingredients;
         query.AddToQueryIngredients("Apples");
         query.DeleteFromQueryIngredients("Apples");
-        for(String i:names){
-            assertNotEquals(i,"Apples");
+        for(Ingredient i:names){
+            assertNotEquals(i.getName(),"Apples");
         }
     }
 }
