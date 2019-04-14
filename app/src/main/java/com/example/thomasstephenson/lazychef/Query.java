@@ -41,6 +41,7 @@ public class Query {
     /* API Key. Right now, this is my personal API key. In the future we might want to change this
      * to a team-wide API key (I don't want my debit card to be charged...
      */
+
     private final String MASHAPE_AUTH  = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
     List<Recipe> recipes = new ArrayList<>();
     List<Ingredient> ingredients = new ArrayList<>();
