@@ -14,10 +14,10 @@ public interface PantryDao {
     void insert(Ingredient ingredient);
 
     @Update
-    void Update(Ingredient... ingredients);
+    void update(Ingredient... ingredients);
 
     @Delete
-    void Delete(Ingredient... ingredients);
+    void delete(Ingredient... ingredients);
 
     @Query("SELECT * from Ingredient")
     List<Ingredient> getSavedPantry();
