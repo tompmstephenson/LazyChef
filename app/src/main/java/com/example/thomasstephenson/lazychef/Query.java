@@ -46,6 +46,10 @@ public class Query {
     List<Recipe> recipes = new ArrayList<>();
     List<Ingredient> ingredients = new ArrayList<>();
 
+    public int size(){
+        return recipes.size();
+    }
+
     public void addRecipeImageToMain(final Recipe recipe, final Activity activity) {
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         ImageRequest request = new ImageRequest(recipe.getImageURL(),
