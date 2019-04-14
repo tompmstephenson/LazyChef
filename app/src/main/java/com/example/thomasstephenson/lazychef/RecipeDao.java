@@ -23,7 +23,6 @@ public interface RecipeDao {
     @Delete
     void delete(RecipeEntity... recipes);
 
-
     @Query("SELECT * from RecipeEntity")
     List<RecipeEntity> getAllSavedRecipes();    //THIS IS HOW YOU GET ALL THE RECIPES THAT THE USER SAVED
 }
