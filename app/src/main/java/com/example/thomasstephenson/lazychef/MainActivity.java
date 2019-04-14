@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +106,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static ArrayList<Recipe> getSavedRecipes() {
+        RecipeDao recipeDao = RecipeDatabase.getInstance(mContext).getRecipeDao();
+        List <RecipeEntity> recipes = recipeDao.getAllSavedRecipes();
+        ArrayList <Recipe> savedRecipes = new ArrayList<>(recipes.size());
+        for (int i = 0; i < recipes.size(); i++) {
+            savedRecipes.add(recipes.get(i).toRecipe(mContext));
+        }
+        return savedRecipes;
+    }
+
     public static void createRecipeView(Recipe recipe, Activity activity) {
         String recipeName = recipe.getName();
         if (recipeName.length() > 45)
@@ -147,21 +160,16 @@ public class MainActivity extends AppCompatActivity {
         catch (NullPointerException e){ }
         setContentView(R.layout.activity_main);
 
-        Log.d("SAVED_INGREDIENTS", "STARTING MainActivity");
-        Intent intent = getIntent();
-        try {
-            ingredients = intent.getExtras().getParcelableArrayList("ingredients");
-            Log.d("SAVED_INGREDIENTS", "ingredients have been retrieved");
-        }
-        catch (Exception e) {
-            Log.d("SAVED_INGREDIENTS", "ingredients could not be retrieved");
-        }
-
         mContext = this;
-
         recipeResults = new ArrayList<>();
         mRecipeButtons = new ArrayList<>();
 
+        ingredients = new ArrayList<>();
+        IngredientsGetAsync ingredAsync = new IngredientsGetAsync(this);
+        ingredAsync.execute();
+
+        RecipesAsync recipesAsync = new RecipesAsync(this);
+        recipesAsync.execute();
         mRecipeListLayout = findViewById(R.id.recipe_list);
         mSearchButton = findViewById(R.id.searchButton);
         mSearchButton.setOnClickListener(mSearchButtonListener);
@@ -169,5 +177,62 @@ public class MainActivity extends AppCompatActivity {
         navigation.getMenu().findItem(R.id.navigation_discover).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+    }
+
+    private class IngredientsGetAsync extends AsyncTask<Void, Void, Integer> {
+
+        Activity context;
+
+        public IngredientsGetAsync(Activity context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            PantryDao pantryDao = PantryDatabase.getInstance(context).getPantryDao();
+            final List <Ingredient> pantryIngredients = pantryDao.getSavedPantry();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < pantryIngredients.size(); i++) {
+                        ingredients.add(pantryIngredients.get(i));
+                    }
+                }
+            });
+            return null;
+        }
+    }
+
+    private class RecipesAsync extends AsyncTask<Void, Void, Integer> {
+
+        Activity context;
+
+        public RecipesAsync(Activity context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            Log.d("SAVED_INGREDIENTS", "Retrieving Recipes");
+            final ArrayList<Recipe> savedRecipes = getSavedRecipes();
+            if (savedRecipes != null) {
+                Log.d("SAVED_INGREDIENTS", "retrieved recipes size: " + savedRecipes.size());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < savedRecipes.size(); i++) {
+                            createRecipeView(savedRecipes.get(i), context);
+                            Query query = new Query();
+                            query.addRecipeImageToMain(savedRecipes.get(i), context, i);
+                            Log.d("SAVED_INGREDIENTS", "Getting saved recipe: " + savedRecipes.get(i));
+                        }
+                    }
+                });
+            }
+            else {
+                Log.d("SAVED_INGREDIENTS", "Could not find saved recipes");
+            }
+            return null;
+        }
     }
 }

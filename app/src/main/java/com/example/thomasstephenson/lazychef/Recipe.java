@@ -9,6 +9,7 @@ import java.io.File;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.util.Log;
 
 /**An instance of class Recipe represents a set of instructions
  * for preparing a certain meal. Includes a list of all necessary ingredients
@@ -70,13 +71,13 @@ public class Recipe implements Parcelable {
     public void setListIngredients(List<Ingredient> ingList) { ingredients = ingList; }
 
     public String getInstructions() { return instructions; }
-    public void setIngredients(String instr) { instructions = instr; }
+    public void setInstructions(String instr) { instructions = instr; }
 
     public int getPrepTime() { return prepTime; }
     public void setPrepTime(int pTime) { prepTime = pTime; }
 
     public int getServings() { return servings; }
-    public void intServings(int recServings) { servings = recServings; }
+    public void setServings(int recServings) { servings = recServings; }
 
     public String getImageURL() { return imageURL; }
     public void setImageURL(String url){ imageURL = url; }
@@ -87,7 +88,12 @@ public class Recipe implements Parcelable {
     public int getEstimatedCalories() {
         int totalCal = 0;
         for(int i=0;i<ingredients.size();i++) {
-            totalCal += ingredients.get(i).getCalories();
+            try {
+                totalCal += (ingredients.get(i).getCalories() * ingredients.get(i).getAmount());
+            }
+            catch (Exception e) {
+                Log.d("SAVED_INGREDIENTS", e.getMessage());
+            }
         }
         return totalCal;
     }
@@ -98,12 +104,15 @@ public class Recipe implements Parcelable {
         RecipeDao recipeDao = RecipeDatabase.getInstance(context.getApplicationContext()).getRecipeDao();
         recipeDao.insert(recipeEntity);
 
+
+        /*
         IngredientDao ingredientDao = IngredientDatabase.getInstance(context.getApplicationContext()).getIngredientDao();
 
         for (Ingredient ingredient: ingredients) {
             IngredientEntity ingredientEntity = new IngredientEntity(ingredient, recipeEntity);
             ingredientDao.insert(ingredientEntity);
         }
+        */
     }
 
 
