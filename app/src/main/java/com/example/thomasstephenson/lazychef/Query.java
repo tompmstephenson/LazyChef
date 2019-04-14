@@ -41,23 +41,19 @@ public class Query {
     /* API Key. Right now, this is my personal API key. In the future we might want to change this
      * to a team-wide API key (I don't want my debit card to be charged...
      */
-    //private final String MASHAPE_AUTH = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
-    private final String MASHAPE_AUTH  = "171d4e42a2mshc256c66ea6fac0ep10200fjsn8c8ab6401453";
+
+    private final String MASHAPE_AUTH  = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
     List<Recipe> recipes = new ArrayList<>();
     List<Ingredient> ingredients = new ArrayList<>();
 
-    public int size(){
-        return recipes.size();
-    }
-
-    public void addRecipeImageToMain(final Recipe recipe, final Activity activity) {
+    public void addRecipeImageToMain(final Recipe recipe, final Activity activity, final int index) {
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         ImageRequest request = new ImageRequest(recipe.getImageURL(),
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
                         recipe.setImage(bitmap);
-                        MainActivity.addBitmapImage(recipes.indexOf(recipe), bitmap);
+                        MainActivity.addBitmapImage(index, bitmap);
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
@@ -86,20 +82,21 @@ public class Query {
         requestQueue.add(request);
     }
 
-    public void getIngredientImage(final Ingredient ingredient, final Activity activity) {
+    public void getIngredientImage(final Ingredient ingredient, final Activity activity, final int index) {
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         ImageRequest request = new ImageRequest(ingredient.getImageURL(),
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
                         ingredient.setImage(bitmap);
-                        int index = ingredients.indexOf(ingredient);
+                        Log.d("SAVED_INGREDIENTS", "bitmap retrieved for " + ingredient.getName() + ", index: " + index);
                         PantryActivity.addBitmapImage(index, bitmap);
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         // TODO
+                        Log.d("SAVED_INGREDIENTS", error.getMessage());
                     }
                 });
         requestQueue.add(request);
@@ -178,7 +175,7 @@ public class Query {
             Recipe recipe = new Recipe(recName, ingList, instr, preptime, servings, imageURL, null);
             recipes.add(recipe);
             MainActivity.createRecipeView(recipe, activity);
-            addRecipeImageToMain(recipe, activity);
+            addRecipeImageToMain(recipe, activity, recipes.indexOf(recipe));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -238,8 +235,9 @@ public class Query {
                 Log.d("SAVED_INGREDIENTS", name);
                 Ingredient ingredient = new Ingredient(name, 0, type, null, 0, imageURL, null);
                 ingredients.add(ingredient);
-                PantryActivity.createIngredientView(ingredient, activity);
-                getIngredientImage(ingredient, activity);
+                PantryActivity.createIngredientView(ingredient, activity, true);
+                int index = ingredients.indexOf(ingredient);
+                getIngredientImage(ingredient, activity, index);
             }
             catch (Exception e) {
                 e.printStackTrace();
