@@ -26,4 +26,7 @@ public interface RecipeDao {
 
     @Query("SELECT * from RecipeEntity")
     List<RecipeEntity> getAllSavedRecipes();    //THIS IS HOW YOU GET ALL THE RECIPES THAT THE USER SAVED
+
+    @Query("SELECT * from RecipeEntity WHERE name=:recipeName")
+    List<RecipeEntity> findRecipeByName(String recipeName);
 }
