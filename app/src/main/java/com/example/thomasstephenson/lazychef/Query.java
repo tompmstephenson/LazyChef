@@ -41,8 +41,7 @@ public class Query {
     /* API Key. Right now, this is my personal API key. In the future we might want to change this
      * to a team-wide API key (I don't want my debit card to be charged...
      */
-    //private final String MASHAPE_AUTH = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
-    private final String MASHAPE_AUTH  = "171d4e42a2mshc256c66ea6fac0ep10200fjsn8c8ab6401453";
+    private final String MASHAPE_AUTH  = "9c1a1208bbmsh1a3a7f5fe78b0a7p15f439jsn581ffaba03cb";
     List<Recipe> recipes = new ArrayList<>();
     List<Ingredient> ingredients = new ArrayList<>();
 
@@ -235,7 +234,7 @@ public class Query {
                 Log.d("SAVED_INGREDIENTS", name);
                 Ingredient ingredient = new Ingredient(name, 0, type, null, 0, imageURL, null);
                 ingredients.add(ingredient);
-                PantryActivity.createIngredientView(ingredient, activity);
+                PantryActivity.createIngredientView(ingredient, activity, true);
                 int index = ingredients.indexOf(ingredient);
                 getIngredientImage(ingredient, activity, index);
             }
