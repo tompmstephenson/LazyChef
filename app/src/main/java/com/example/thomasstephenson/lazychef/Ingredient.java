@@ -103,4 +103,8 @@ public class Ingredient implements Parcelable {
         parcel.writeInt(calories);
         parcel.writeString(imageURL);
     }
+
+    public String toString() {
+        return "" + amount + " " + unit + " of " + name;
+    }
 }

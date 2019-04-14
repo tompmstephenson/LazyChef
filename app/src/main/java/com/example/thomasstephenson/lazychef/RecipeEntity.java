@@ -34,8 +34,9 @@ public class RecipeEntity {
     public int estimatedCalories;
     public int servings;
     public String imageURL;
+    public List<String> ingredients;
 
-    public RecipeEntity(String name, byte[] image, String instructions, int prepTime, int estimatedCalories, int servings, String imageURL) {
+    public RecipeEntity(String name, byte[] image, String instructions, int prepTime, int estimatedCalories, int servings, String imageURL, List<String> ingredients) {
         this.name = name;
         this.image = image;
         this.instructions = instructions;
@@ -43,6 +44,7 @@ public class RecipeEntity {
         this.estimatedCalories = estimatedCalories;
         this.servings = servings;
         this.imageURL = imageURL;
+        this.ingredients = ingredients;
     }
 
     public RecipeEntity(Recipe recipe) {
@@ -57,6 +59,11 @@ public class RecipeEntity {
         this.estimatedCalories = recipe.getEstimatedCalories();
         this.servings = recipe.getServings();
         this.imageURL = recipe.getImageURL();
+        List<String> ings = new ArrayList<String>();
+        for (Ingredient i: recipe.getListIngredients()) {
+            ings.add(i.toString());
+        }
+        this.ingredients = ings;
     }
 
     public Recipe toRecipe(Context context) {
