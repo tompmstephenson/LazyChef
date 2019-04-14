@@ -46,14 +46,18 @@ public class Query {
     List<Recipe> recipes = new ArrayList<>();
     List<Ingredient> ingredients = new ArrayList<>();
 
-    public void addRecipeImageToMain(final Recipe recipe, final Activity activity, final int index) {
+    public int size(){
+        return recipes.size();
+    }
+
+    public void addRecipeImageToMain(final Recipe recipe, final Activity activity) {
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         ImageRequest request = new ImageRequest(recipe.getImageURL(),
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
                         recipe.setImage(bitmap);
-                        MainActivity.addBitmapImage(index, bitmap);
+                        MainActivity.addBitmapImage(recipes.indexOf(recipe), bitmap);
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
@@ -82,21 +86,20 @@ public class Query {
         requestQueue.add(request);
     }
 
-    public void getIngredientImage(final Ingredient ingredient, final Activity activity, final int index) {
+    public void getIngredientImage(final Ingredient ingredient, final Activity activity) {
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         ImageRequest request = new ImageRequest(ingredient.getImageURL(),
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
                         ingredient.setImage(bitmap);
-                        Log.d("SAVED_INGREDIENTS", "bitmap retrieved for " + ingredient.getName() + ", index: " + index);
+                        int index = ingredients.indexOf(ingredient);
                         PantryActivity.addBitmapImage(index, bitmap);
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         // TODO
-                        Log.d("SAVED_INGREDIENTS", error.getMessage());
                     }
                 });
         requestQueue.add(request);
@@ -175,7 +178,7 @@ public class Query {
             Recipe recipe = new Recipe(recName, ingList, instr, preptime, servings, imageURL, null);
             recipes.add(recipe);
             MainActivity.createRecipeView(recipe, activity);
-            addRecipeImageToMain(recipe, activity, recipes.indexOf(recipe));
+            addRecipeImageToMain(recipe, activity);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -236,8 +239,7 @@ public class Query {
                 Ingredient ingredient = new Ingredient(name, 0, type, null, 0, imageURL, null);
                 ingredients.add(ingredient);
                 PantryActivity.createIngredientView(ingredient, activity);
-                int index = ingredients.indexOf(ingredient);
-                getIngredientImage(ingredient, activity, index);
+                getIngredientImage(ingredient, activity);
             }
             catch (Exception e) {
                 e.printStackTrace();
