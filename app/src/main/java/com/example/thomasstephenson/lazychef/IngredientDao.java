@@ -18,10 +18,10 @@ public interface IngredientDao {
     void insert(IngredientEntity ingredient);
 
     @Update
-    void Update(IngredientEntity... ingredients);
+    void update(IngredientEntity... ingredients);
 
     @Delete
-    void Delete(IngredientEntity... ingredients);
+    void delete(IngredientEntity... ingredients);
 
     @Query("SELECT * from IngredientEntity")
     List<IngredientEntity> getAllIngredients();

@@ -46,8 +46,10 @@ public class Pantry {
 	 */
 	public void removeIngredient(String ingredientName) {
 		for(int i = 0; i < ingredientList.size(); i++) {
-			if(ingredientList.get(i).getName().equals(ingredientName))
+			if(ingredientList.get(i).getName().equals(ingredientName)) {
 				ingredientList.remove(ingredientList.get(i));
+				return;
+			}
 		}
 	}
 	
