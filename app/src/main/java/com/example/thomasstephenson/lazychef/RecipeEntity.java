@@ -1,6 +1,7 @@
 package com.example.thomasstephenson.lazychef;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Index;
 import android.content.Context;
 import android.graphics.Bitmap;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * This class represents a recipe that has been saved to the database. It is very similar to Recipe
  * with the inclusion of an id.
  */
-@Entity
+@Entity(indices = @Index(value = "name", unique = true))
 public class RecipeEntity {
 
     //fields are public so that they can be inserted into Room Database
