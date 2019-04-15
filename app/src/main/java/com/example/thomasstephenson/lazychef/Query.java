@@ -161,18 +161,26 @@ public class Query {
             int preptime = jsonRecipeDetails.getInt("readyInMinutes");
             int servings = jsonRecipeDetails.getInt("servings");
 
-            List<Ingredient> ingList = new ArrayList<>();
+            //List<Ingredient> ingList = new ArrayList<>();
             JSONArray jsonRecipeIngredients = jsonRecipeDetails.getJSONArray("extendedIngredients");
 
             //extract ingredients
+            StringBuilder ingredientsStrBuilder = new StringBuilder();
+            ingredientsStrBuilder.append("Ingredients: ");
             for (int j = 0; j < jsonRecipeIngredients.length(); j++) {
                 JSONObject jsonIngredient = jsonRecipeIngredients.getJSONObject(j);
                 String ingName = jsonIngredient.getString("name");
                 int ingAmount = jsonIngredient.getInt("amount");
                 String ingUnit = jsonIngredient.getString("unit");
-                ingList.add(new Ingredient(ingName, ingAmount, null, ingUnit, 0));
+                String ingDescription = "" + ingAmount + " " + ingUnit + " of " + ingName;
+                if (j == jsonRecipeIngredients.length() - 1)
+                ingredientsStrBuilder.append(ingDescription);
+            else
+                ingredientsStrBuilder.append(ingDescription + ", ");
+                //ingList.add(new Ingredient(ingName, ingAmount, null, ingUnit, 0));
             }
-            Recipe recipe = new Recipe(recName, ingList, instr, preptime, servings, imageURL, null);
+            String ingDescriptions = ingredientsStrBuilder.toString();
+            Recipe recipe = new Recipe(recName, ingDescriptions, instr, preptime, servings, imageURL, null);
             recipes.add(recipe);
             MainActivity.createRecipeView(recipe, activity);
             addRecipeImageToMain(recipe, activity, recipes.indexOf(recipe));

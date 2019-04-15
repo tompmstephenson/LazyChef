@@ -17,8 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_pantry:
                     startActivity(new Intent(MainActivity.this, PantryActivity.class));
                     return true;
-                case R.id.navigation_settings:
-                    return true;
             }
             return false;
         }
@@ -65,6 +61,21 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 Recipe recipe = recipeResults.get(index);
+
+                /*
+                List <Ingredient> ingredients = recipe.getListIngredients();
+                String ings = new String();
+                for (int i = 0; i < recipe.getListIngredients().size(); i++) {
+                    Ingredient j = recipe.getListIngredients().get(i);
+                    ings += j.toString();
+                    if (i < recipe.getListIngredients().size() - 1) {
+                        ings += ",";
+                    }
+                }
+                */
+                Log.d("SAVED_INGREDIENTS", "Ingredients from clicked recipe: " + recipe.getListIngredients());
+
+
                 Log.d("SAVED_INGREDIENTS", "Saved Recipe: " + recipe.getName());
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("recipe", recipe);
@@ -120,7 +131,8 @@ public class MainActivity extends AppCompatActivity {
         String recipeName = recipe.getName();
         if (recipeName.length() > 45)
             recipeName = recipeName.substring(0, 42) + "...";
-        List <Ingredient> ingredients = recipe.getListIngredients();
+        String ingredientsDescript = recipe.getListIngredients();
+        /*
         StringBuilder ingredientsStrBuilder = new StringBuilder();
         ingredientsStrBuilder.append("Ingredients: ");
         for (int i = 0; i < ingredients.size(); i++) {
@@ -130,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 ingredientsStrBuilder.append(ingredients.get(i).getName() + ", ");
         }
         String ingredientsDescript = ingredientsStrBuilder.toString();
+        */
         if (ingredientsDescript.length() > 60)
             ingredientsDescript = ingredientsDescript.substring(0, 57) + "...";
 
@@ -168,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         IngredientsGetAsync ingredAsync = new IngredientsGetAsync(this);
         ingredAsync.execute();
 
-        RecipesAsync recipesAsync = new RecipesAsync(this);
+        getRecipesAsync recipesAsync = new getRecipesAsync(this);
         recipesAsync.execute();
         mRecipeListLayout = findViewById(R.id.recipe_list);
         mSearchButton = findViewById(R.id.searchButton);
@@ -176,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.getMenu().findItem(R.id.navigation_discover).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
     }
 
     private class IngredientsGetAsync extends AsyncTask<Void, Void, Integer> {
@@ -203,11 +215,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class RecipesAsync extends AsyncTask<Void, Void, Integer> {
+    private class getRecipesAsync extends AsyncTask<Void, Void, Integer> {
 
         Activity context;
 
-        public RecipesAsync(Activity context) {
+        public getRecipesAsync(Activity context) {
             this.context = context;
         }
 

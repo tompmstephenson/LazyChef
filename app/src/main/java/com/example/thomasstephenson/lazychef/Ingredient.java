@@ -6,6 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.io.File;
 /**
@@ -17,7 +18,7 @@ import java.io.File;
  * as that would require an extra API call in Query.
  */
 
-@Entity(indices = @Index(value = "name", unique = true))
+@Entity //(indices = @Index(value = "name", unique = true))
 public class Ingredient implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -106,6 +107,7 @@ public class Ingredient implements Parcelable {
     }
 
     public String toString() {
-        return "" + amount + " " + unit + " of " + name;
+        String temp = "" + amount + " " + unit + " of " + name;
+        return temp;
     }
 }
