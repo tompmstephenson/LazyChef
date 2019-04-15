@@ -1,6 +1,7 @@
 package com.example.thomasstephenson.lazychef;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
 import android.os.Parcel;
@@ -16,7 +17,7 @@ import java.io.File;
  * as that would require an extra API call in Query.
  */
 
-@Entity
+@Entity(indices = @Index(value = "name", unique = true))
 public class Ingredient implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     public int id;

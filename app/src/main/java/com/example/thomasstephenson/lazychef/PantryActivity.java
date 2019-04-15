@@ -54,7 +54,7 @@ public class PantryActivity extends AppCompatActivity {
 
     };
 
-    private static View.OnClickListener mButtonListener = new View.OnClickListener() {
+    private static View.OnClickListener addToPantry = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Button pantryButton = (Button) view;
@@ -62,10 +62,35 @@ public class PantryActivity extends AppCompatActivity {
 
             try {
                 Ingredient ingredient = ingredientsResults.get(index);
-                IngredientsAsync async = new IngredientsAsync(mContext, ingredient);
+                AddIngredientsAsync async = new AddIngredientsAsync(mContext, ingredient);
                 async.execute();
                 savedIngredients.add(ingredient);
                 Log.d("SAVED_INGREDIENTS", "Saved Ingredient: " + ingredient.getName());
+            }
+            catch (Exception e) {
+                Log.d("SAVED_INGREDIENTS", "ingredient #" + index  + " could not be found");
+            }
+        }
+    };
+
+    private static View.OnClickListener removeFromPantry = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Button pantryButton = (Button) view;
+            int index = pantryButtons.indexOf(pantryButton);
+
+            try {
+                Ingredient ingredient = ingredientsResults.get(index);
+                RemoveIngredientsAsync async = new RemoveIngredientsAsync(mContext, ingredient);
+                async.execute();
+                try {
+                    savedIngredients.remove(ingredient);
+                    mIngredientListLayout.removeView(mIngredientListLayout.getChildAt(index));
+                }
+                catch (Exception e) {
+                    Log.d("SAVED_INGREDIENTS", e.getMessage());
+                }
+                Log.d("SAVED_INGREDIENTS", "Removed Ingredient: " + ingredient.getName());
             }
             catch (Exception e) {
                 Log.d("SAVED_INGREDIENTS", "ingredient #" + index  + " could not be found");
@@ -89,14 +114,14 @@ public class PantryActivity extends AppCompatActivity {
         }
     }
 
-    public static void createIngredientView(Ingredient ingredient, Activity activity) {
+    public static void createIngredientView(Ingredient ingredient, Activity activity, boolean newIngredient) {
         String ingredientName = ingredient.getName();
         String ingredientType = ingredient.getType();
-        addIngredientLayout(ingredientName, ingredientType, activity);
+        addIngredientLayout(ingredientName, ingredientType, activity, newIngredient);
         ingredientsResults.add(ingredient);
     }
 
-    private static void addIngredientLayout(String ingredientName, String ingredientType, Activity activity) {
+    private static void addIngredientLayout(String ingredientName, String ingredientType, Activity activity, boolean newIngredient) {
         View ingredientView = activity.getLayoutInflater().inflate(R.layout.ingredient_layout, null);
         ViewGroup ingredientViewGroup = (ViewGroup) ingredientView;
         TextView ingredientTitleView = (TextView) ingredientViewGroup.getChildAt(1);
@@ -104,8 +129,11 @@ public class PantryActivity extends AppCompatActivity {
         TextView typeView = (TextView) ingredientViewGroup.getChildAt(2);
         typeView.setText("Type: " + ingredientType);
         Button pantryButton = (Button) ingredientViewGroup.getChildAt(3);
+        pantryButton.setOnClickListener(addToPantry);
+        if (newIngredient) {
+            pantryButton.setText("Add to Pantry");
+        }
         pantryButtons.add(pantryButton);
-        pantryButton.setOnClickListener(mButtonListener);
         mIngredientListLayout.addView(ingredientView);
     }
 
@@ -154,7 +182,7 @@ public class PantryActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
-        IngredientsGetAsync async = new IngredientsGetAsync(mContext);
+        GetIngredientsAsync async = new GetIngredientsAsync(mContext);
         async.execute();
     }
 
@@ -164,12 +192,12 @@ public class PantryActivity extends AppCompatActivity {
         outState.putParcelableArrayList("ingredients", savedIngredients);
     }
 
-    private static class IngredientsAsync extends AsyncTask<Void, Void, Integer> {
+    private static class AddIngredientsAsync extends AsyncTask<Void, Void, Integer> {
 
         Activity context;
         Ingredient ingredient;
 
-        public IngredientsAsync(Activity context, Ingredient ingredient) {
+        public AddIngredientsAsync(Activity context, Ingredient ingredient) {
             this.context = context;
             this.ingredient = ingredient;
         }
@@ -182,11 +210,30 @@ public class PantryActivity extends AppCompatActivity {
         }
     }
 
-    private class IngredientsGetAsync extends AsyncTask<Void, Void, Integer> {
+    private static class RemoveIngredientsAsync extends AsyncTask<Void, Void, Integer> {
+
+        Activity context;
+        Ingredient ingredient;
+
+        public RemoveIngredientsAsync(Activity context, Ingredient ingredient) {
+            this.context = context;
+            this.ingredient = ingredient;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            PantryDao pantryDao = PantryDatabase.getInstance(context).getPantryDao();
+            pantryDao.delete(ingredient);
+            return null;
+        }
+    }
+
+
+    private class GetIngredientsAsync extends AsyncTask<Void, Void, Integer> {
 
         Activity context;
 
-        public IngredientsGetAsync(Activity context) {
+        public GetIngredientsAsync(Activity context) {
             this.context = context;
         }
 
@@ -198,7 +245,7 @@ public class PantryActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     for (int i = 0; i < ingredients.size(); i++) {
-                        createIngredientView(ingredients.get(i), mContext);
+                        createIngredientView(ingredients.get(i), mContext, false);
                         Query query = new Query();
                         query.getIngredientImage(ingredients.get(i), mContext, i);
                     }
