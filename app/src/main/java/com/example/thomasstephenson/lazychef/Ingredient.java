@@ -24,7 +24,7 @@ public class Ingredient implements Parcelable {
     public int id;
 
     private String name;
-    private int amount;
+    private double amount;
     private String unit;
     private String type;
     private int calories;
@@ -32,7 +32,7 @@ public class Ingredient implements Parcelable {
     @Ignore
     private Bitmap image;
 
-    public Ingredient(String name, int amount, String type, String unit, int cal, String imageURL, Bitmap image){
+    public Ingredient(String name, double amount, String type, String unit, int cal, String imageURL, Bitmap image){
         this.name = name;
         this.amount = amount;
         this.type = type;
@@ -41,7 +41,7 @@ public class Ingredient implements Parcelable {
         this.imageURL = imageURL;
         this.image = image;
     }
-    public Ingredient(String name, int amount, String type, String unit, int calories){ //Constructor if image unavailable
+    public Ingredient(String name, double amount, String type, String unit, int calories){ //Constructor if image unavailable
         this.name = name;
         this.amount = amount;
         this.type = type;
@@ -73,7 +73,7 @@ public class Ingredient implements Parcelable {
     public String getName() { return name; }
     public void setName(String ingName) { name = ingName; }
 
-    public int getAmount() { return amount; }
+    public double getAmount() { return amount; }
     public void setAmount(int ingAmount) { amount = ingAmount; }
 
     public String getType() { return type; }
@@ -99,7 +99,7 @@ public class Ingredient implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
-        parcel.writeInt(amount);
+        parcel.writeDouble(amount);
         parcel.writeString(type);
         parcel.writeString(unit);
         parcel.writeInt(calories);
