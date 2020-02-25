@@ -46,8 +46,6 @@ public class PantryActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_pantry:
                     return true;
-                case R.id.navigation_settings:
-                    return true;
             }
             return false;
         }
@@ -129,9 +127,13 @@ public class PantryActivity extends AppCompatActivity {
         TextView typeView = (TextView) ingredientViewGroup.getChildAt(2);
         typeView.setText("Type: " + ingredientType);
         Button pantryButton = (Button) ingredientViewGroup.getChildAt(3);
-        pantryButton.setOnClickListener(addToPantry);
         if (newIngredient) {
+            pantryButton.setOnClickListener(addToPantry);
             pantryButton.setText("Add to Pantry");
+        }
+        else {
+            pantryButton.setOnClickListener(removeFromPantry);
+            pantryButton.setText("Remove from Pantry");
         }
         pantryButtons.add(pantryButton);
         mIngredientListLayout.addView(ingredientView);
@@ -207,10 +209,10 @@ public class PantryActivity extends AppCompatActivity {
             PantryDao pantryDao = PantryDatabase.getInstance(context).getPantryDao();
             pantryDao.insert(ingredient);
             return null;
-        }
     }
+}
 
-    private static class RemoveIngredientsAsync extends AsyncTask<Void, Void, Integer> {
+private static class RemoveIngredientsAsync extends AsyncTask<Void, Void, Integer> {
 
         Activity context;
         Ingredient ingredient;

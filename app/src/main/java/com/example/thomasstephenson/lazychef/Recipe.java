@@ -19,14 +19,14 @@ import android.util.Log;
 public class Recipe implements Parcelable {
 
     private String name;
-    private List<Ingredient> ingredients;
+    private String ingredients;
     private String instructions; //MIGHT WANT TO PARSE AS A LIST
     private int prepTime;
     private int servings;
     private String imageURL;
     private Bitmap image;
 
-    public Recipe(String recName,List<Ingredient> ingList,String instr,int pTime,int recServings,String url,Bitmap img) {
+    public Recipe(String recName,String ingList,String instr,int pTime,int recServings,String url,Bitmap img) {
         name = recName;
         ingredients = ingList;
         instructions = instr;
@@ -35,7 +35,7 @@ public class Recipe implements Parcelable {
         imageURL = url;
         image = img;
     }
-    public Recipe(String recName,List<Ingredient> ingList,String instr,int pTime,int recServings) { //Recipe constructor when image unavailable
+    public Recipe(String recName,String ingList,String instr,int pTime,int recServings) { //Recipe constructor when image unavailable
         name = recName;
         ingredients = ingList;
         instructions = instr;
@@ -49,7 +49,7 @@ public class Recipe implements Parcelable {
         imageURL = in.readString();
         prepTime = in.readInt();
         servings = in.readInt();
-        ingredients = in.createTypedArrayList(Ingredient.CREATOR);
+        ingredients = in.readString();
     }
 
     public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
@@ -67,8 +67,8 @@ public class Recipe implements Parcelable {
     public String getName() { return name; }
     public void setName(String recName) { name = recName; }
 
-    public List<Ingredient> getListIngredients() { return ingredients; }
-    public void setListIngredients(List<Ingredient> ingList) { ingredients = ingList; }
+    public String getListIngredients() { return ingredients; }
+    public void setListIngredients(String ingList) { ingredients = ingList; }
 
     public String getInstructions() { return instructions; }
     public void setInstructions(String instr) { instructions = instr; }
@@ -85,9 +85,10 @@ public class Recipe implements Parcelable {
     public Bitmap getImage() { return image; }
     public void setImage(Bitmap img) { image = img; }
 
+    /*
     public int getEstimatedCalories() {
         int totalCal = 0;
-        for(int i=0;i<ingredients.size();i++) {
+        for(int i=0; i < ingredients.size();i++) {
             try {
                 totalCal += (ingredients.get(i).getCalories() * ingredients.get(i).getAmount());
             }
@@ -97,13 +98,13 @@ public class Recipe implements Parcelable {
         }
         return totalCal;
     }
+    */
 
     public void saveRecipe(Context context) {
         RecipeEntity recipeEntity = new RecipeEntity(this);
 
         RecipeDao recipeDao = RecipeDatabase.getInstance(context.getApplicationContext()).getRecipeDao();
         recipeDao.insert(recipeEntity);
-
 
         /*
         IngredientDao ingredientDao = IngredientDatabase.getInstance(context.getApplicationContext()).getIngredientDao();
@@ -129,8 +130,9 @@ public class Recipe implements Parcelable {
         parcel.writeString(imageURL);
         parcel.writeInt(prepTime);
         parcel.writeInt(servings);
-        Parcelable[] ingredientParcels = new Parcelable[ingredients.size()];
-        ingredients.toArray(ingredientParcels);
-        parcel.writeParcelableArray(ingredientParcels, 0);
+        parcel.writeString(ingredients);
+        //Parcelable[] ingredientParcels = new Parcelable[ingredients.size()];
+        //ingredients.toArray(ingredientParcels);
+        //parcel.writeParcelableArray(ingredientParcels, 0);
     }
 }

@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ import java.util.List;
  * This class represents a recipe that has been saved to the database. It is very similar to Recipe
  * with the inclusion of an id.
  */
-@Entity(indices = @Index(value = "name", unique = true))
+@Entity //(indices = @Index(value = "name", unique = true))
 public class RecipeEntity {
 
     //fields are public so that they can be inserted into Room Database
@@ -32,17 +33,17 @@ public class RecipeEntity {
     public byte[] image;
     public String instructions;
     public int prepTime;
-    public int estimatedCalories;
+    //public int estimatedCalories;
     public int servings;
     public String imageURL;
     public String ingredients;
 
-    public RecipeEntity(String name, byte[] image, String instructions, int prepTime, int estimatedCalories, int servings, String imageURL, String ingredients) {
+    public RecipeEntity(String name, byte[] image, String instructions, int prepTime, int servings, String imageURL, String ingredients) {
         this.name = name;
         this.image = image;
         this.instructions = instructions;
         this.prepTime = prepTime;
-        this.estimatedCalories = estimatedCalories;
+        //this.estimatedCalories = estimatedCalories;
         this.servings = servings;
         this.imageURL = imageURL;
         this.ingredients = ingredients;
@@ -57,9 +58,10 @@ public class RecipeEntity {
         this.image = byteArray;
         this.instructions = recipe.getInstructions();
         this.prepTime = recipe.getPrepTime();
-        this.estimatedCalories = recipe.getEstimatedCalories();
+        //this.estimatedCalories = recipe.getEstimatedCalories();
         this.servings = recipe.getServings();
         this.imageURL = recipe.getImageURL();
+        /*
         String ings = new String();
         for (int i = 0; i < recipe.getListIngredients().size(); i++) {
             Ingredient j = recipe.getListIngredients().get(i);
@@ -68,19 +70,21 @@ public class RecipeEntity {
                 ings += ",";
             }
         }
-        this.ingredients = ings;
+        */
+        this.ingredients = recipe.getListIngredients();
     }
 
     public Recipe toRecipe(Context context) {
-        List<IngredientEntity> ingredients;
-        IngredientDao ingredientDao = IngredientDatabase.getInstance(context).getIngredientDao();
-        ingredients = ingredientDao.findIngredientsForRecipe(id);
-        List<Ingredient> ingredientArray = new ArrayList<Ingredient>();
-        for (IngredientEntity ingredientEntity: ingredients) {
-            ingredientArray.add(ingredientEntity.toIngredient());
+
+        /*
+        List <String> ingredientNames = Arrays.asList(this.ingredients.split(","));
+        List <Ingredient> ingredients = new ArrayList<>();
+        for (int i = 0; i < ingredientNames.size(); i++) {
+            ingredients.add(new Ingredient(ingredientNames.get(i), 0, null, null, 0));
         }
+        */
         ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(image);
         Bitmap recImage = BitmapFactory.decodeStream(arrayInputStream);
-        return new Recipe(this.name, ingredientArray, instructions, prepTime, servings, imageURL, recImage);
+        return new Recipe(this.name, ingredients, instructions, prepTime, servings, imageURL, recImage);
     }
 }

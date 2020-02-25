@@ -29,7 +29,7 @@ public class IngredientEntity {
     public int id;
 
     public String name;
-    public int amount;
+    public double amount;
     public String unit;
     public String type;
     public int calories;
@@ -38,7 +38,7 @@ public class IngredientEntity {
 
     public int recipeId;
 
-    public IngredientEntity(String name, int amount, String unit, String type, int calories, byte[] image, String imageURL, final int recipeId) {
+    public IngredientEntity(String name, double amount, String unit, String type, int calories, byte[] image, String imageURL, final int recipeId) {
         this.name = name;
         this.amount = amount;
         this.unit = unit;

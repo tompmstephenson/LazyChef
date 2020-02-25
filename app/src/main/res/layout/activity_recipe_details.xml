@@ -37,19 +37,17 @@
     <TextView
         android:id="@+id/recipe_details_instructions"
         android:layout_width="304dp"
-        android:layout_height="138dp"
+        android:layout_height="69dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="52dp"
+        android:scrollbars="vertical"
         android:text="Instructions"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/recipe_details_save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_details_servings"
-        android:scrollbars = "vertical"/>
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/recipe_details_save"
@@ -57,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="16dp"
         android:text="Save Recipe"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -89,5 +87,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipe_details_prep_time" />
+
+    <TextView
+        android:id="@+id/recipe_details_ingredients"
+        android:layout_width="299dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/recipe_details_instructions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_details_servings" />
 
 </android.support.constraint.ConstraintLayout>
